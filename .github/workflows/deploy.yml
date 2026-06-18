@@ -30,6 +30,11 @@ jobs:
         with:
           path: ${{ env.BUILD_PATH }}
 
+      - name: Fix permissions
+        run: |
+          chmod +x ./node_modules/.bin/*
+          chmod -R u+x ./node_modules/.bin/
+
   deploy:
     name: Deploy
     needs: build
