@@ -25,15 +25,15 @@ jobs:
       - name: Checkout your repository using git
         uses: actions/checkout@v6
 
-      - name: Install, build, and upload your site
-        uses: withastro/action@v6
-        with:
-          path: ${{ env.BUILD_PATH }}
-
       - name: Fix permissions
         run: |
           chmod +x ./node_modules/.bin/*
           chmod -R u+x ./node_modules/.bin/
+
+      - name: Install, build, and upload your site
+        uses: withastro/action@v6
+        with:
+          path: ${{ env.BUILD_PATH }}
 
   deploy:
     name: Deploy
