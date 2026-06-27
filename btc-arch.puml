@@ -1,0 +1,123 @@
+@startuml
+title Bitcoin Self-Custody WhatsApp Consultancy — System Architecture
+
+skinparam componentStyle rectangle
+skinparam roundCorner 8
+skinparam defaultFontName "Segoe UI"
+
+actor "Client A\n(WhatsApp user)" as ClientA #LightBlue
+actor "Client B\n(WhatsApp user)" as ClientB #LightGreen
+actor "You\n(Admin)" as Admin #Gold
+
+cloud "WhatsApp\nServers\n(E2E encrypted)" as WA #White
+
+package "Host Machine\n(Windows 10 OR Linux VPS)" as Host #F8F8F8 {
+
+    package "Hermes Profile: 'btc-consult'\n(~/.hermes/profiles/btc-consult/)" as Profile #EAEAFF {
+
+        component "Baileys Bridge\nNode.js, unofficial\nWhatsApp Web emulation" as Baileys #LightYellow
+        component "Gateway\n(session router,\ncron scheduler)" as Gateway #LightYellow
+
+        component "AIAgent\n(conversation loop,\ntool dispatch,\nprompt builder)" as Agent #FFE4B5
+
+        database "state.db\nSQLite + FTS5" as DB {
+            rectangle "Session A\n(key=chatA+userA)" as SA
+            rectangle "Session B\n(key=chatB+userB)" as SB
+            rectangle "Admin session" as SAdm
+        }
+
+        file "SOUL.md\nBitcoin consultant\npersona" as Soul #FFFACD
+        file "config.yaml\ntoolsets, approvals,\ncompression, etc." as Config #FFFACD
+        file ".env\nAPI keys" as Env #FFFACD
+        file "MEMORY.md\n(profile-wide)" as Mem #FFB6C1
+        file "gateway.json\nreset policies,\nplatform config" as GW #FFFACD
+
+        rectangle "Tool Layer" as Tools {
+            component "Web Search" as WebT
+            component "Web Extract" as ExtT
+            component "Vision Analyze" as VisionT
+            component "STT: faster-whisper" as STT
+            component "TTS: edge" as TTS
+        }
+    }
+}
+
+cloud "LLM Provider\n(OpenRouter / Anthropic /\nNous Portal / Gemini)" as LLM #E0E0FF
+cloud "Internet\n(BTC price, news,\nwallet docs)" as Internet #E0FFE0
+
+ClientA --> WA : text / voice / image
+ClientB --> WA : text / voice / image
+WA --> Baileys : encrypted payload
+Baileys --> Gateway : normalized message\n(chat_id, user_id, body)
+Gateway --> DB : lookup session by\nhash(chat_id, user_id)
+
+Gateway --> Agent : turn (User A)\nloads ONLY Session A history
+Gateway --> Agent : turn (User B)\nloads ONLY Session B history
+
+Agent --> Soul : read persona\n(system prompt slot one)
+Agent --> Config : read enabled toolsets
+Agent --> Mem : retrieve relevant facts\n(RISK: profile-wide!)
+Agent --> LLM : chat completion\n(with tools schema)
+Agent --> WebT : BTC price / news lookup
+Agent --> VisionT : wallet screenshot analysis
+Agent --> STT : transcribe inbound .ogg voice
+Agent --> TTS : synthesize outbound MP3 voice
+
+WebT --> Internet
+ExtT --> Internet
+VisionT --> LLM : uses LLM vision model
+
+Agent --> Gateway : final text + tool results
+Gateway --> Baileys : outbound msg\n(markdown → WhatsApp fmt)
+Baileys --> WA : encrypted
+WA --> ClientA : reply
+WA --> ClientB : reply
+
+Admin --> Profile : `hermes -p btc-consult`\n(config, /approve, /restart,\nmonitor logs, prune sessions)
+
+note bottom of DB #E0FFE0
+  <b>ISOLATION GUARANTEE (the core ask)</b>
+  Session key = deterministic hash(chat_id, user_id)
+  Client A's message history NEVER enters Client B's context.
+  Cross-session reads are blocked at the session store layer.
+  This is true even though all sessions live in one SQLite file.
+end note
+
+note right of Mem #FFE4E1
+  <b>MEMORY LEAKAGE RISK (must address)</b>
+  Default MEMORY.md is shared across ALL sessions in the profile.
+  If Client A says "I use a Ledger Nano X", that fact could
+  surface when Client B asks about hardware wallets.
+
+  Mitigations (pick one):
+   1. Disable memory entirely — `memory.memory_enabled: false`
+   2. Use Honcho backend — per-user memory partitioning
+      (`hermes honcho setup`, requires honcho plugin)
+   3. Keep memory but instruct agent to NEVER store client data,
+      only generic Bitcoin expertise (fragile — not recommended)
+
+  Recommended: Option 1 (disable) for v1 launch, Honcho for v2.
+end note
+
+note bottom of Tools #E0E0FF
+  <b>TOOLSET LOCKDOWN</b>
+  ENABLED:  web, vision, stt, tts  (consultancy value)
+  DISABLED: terminal, file, code_execution, cronjob,
+            delegation, session_search, skills, kanban,
+            clarify (clients can't ask clarifying Qs to admin)
+
+  Rationale: clients must not run shell, read host files,
+  or schedule jobs on your machine.
+  Consider the bundled `safe` toolset as a starting base.
+end note
+
+note right of Baileys #FFFACD
+  <b>BAN RISK</b>
+  Baileys is unofficial. Mitigate:
+   - Dedicated phone number (NOT personal)
+   - No bulk/outbound spam
+   - Only reply to inbound messages
+   - Keep session keys safe (~/.hermes/platforms/whatsapp/session)
+end note
+
+@enduml
