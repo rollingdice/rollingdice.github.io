@@ -27,8 +27,10 @@ jobs:
 
       - name: Fix permissions
         run: |
-          chmod +x ./node_modules/.bin/*
-          chmod -R u+x ./node_modules/.bin/
+          if [ -d ./node_modules/.bin ]; then
+            chmod +x ./node_modules/.bin/*
+            chmod -R u+x ./node_modules/.bin/
+          fi
 
       - name: Install, build, and upload your site
         uses: withastro/action@v6
