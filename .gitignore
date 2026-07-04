@@ -1,0 +1,20 @@
+# Build output - CI builds fresh, no need to commit
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Logs and temp files
+build_logs.txt
+deploy_logs.txt
+
+# JSON data files from debugging
+blogcontents.json
+blogghpages.json
+blogrepo.json
+check.json
+deploy_logs.txt
+jobs2.json
+lastrun.json
+repos.json
