@@ -1,0 +1,181 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Bitcoin Protocol</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        Quantum Bitcoin: The Post-Quantum Upgrade Race Is Real
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        Two Bitcoin Improvement Proposals landed in eight months. They disagree on the right way forward. That is what a real engineering race looks like, and the developers behind it are not waiting for a quantum computer to arrive.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-07-07">July 7, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        The day a quantum computer breaks Bitcoin's digital signatures, the coins most people consider their safest will be the first to go. Satoshi's stash. Early mined coins sitting in pay-to-public-key outputs. Every Taproot address that ever received funds. None of them moved. All of them sit on a public ledger with their public keys exposed, waiting for anyone with a sufficiently capable machine to read.
+      </p>
+
+      <p>
+        I am not going to tell you a quantum computer is coming next year. Nobody credible is saying that. But the people who actually build Bitcoin, the ones who write the BIPs and maintain the consensus code, are treating this as a real engineering problem with a real timeline. Two proposals landed in the Bitcoin BIPs repository in the last eight months. One in December 2024, one in February 2026. They have reference implementations, named authors, and they disagree with each other on the right way forward.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What a quantum computer actually threatens</h2>
+
+      <p>
+        Bitcoin signs transactions with ECDSA over the secp256k1 curve. When you spend from an address, you reveal a public key. A quantum computer running Shor's algorithm could, in theory, derive the private key from that public key. Once the private key is out, the coins are gone.
+      </p>
+
+      <p>
+        This is not a hashing problem. The SHA-256 hash functions Bitcoin uses for mining and address commitments are far less threatened by quantum algorithms. Grover's algorithm, the relevant one for hashes, gives a quadratic speedup rather than an exponential one. The practical consensus is that SHA-256 holds up against anything plausible for a long while. The signatures are the soft target.
+      </p>
+
+      <p>
+        The key distinction, and the one the BIP authors are careful about, is between long exposure and short exposure. Long exposure attacks target public keys that have been sitting on-chain for years. Satoshi's coins. Reused addresses. Taproot outputs, because Taproot's key-path spend design publishes an internal public key directly in the output. An attacker with a slow but working quantum machine has unlimited time to grind on these keys. Short exposure attacks are the harder version, where an attacker tries to crack a public key in the short window it sits unconfirmed in the mempool. Those need a much faster machine. They are the second-wave problem.
+      </p>
+
+      <p>
+        The first wave is the one already on-chain, and it is not small.
+      </p>
+
+      <p>
+        The number comes from BIP-361, a proposal titled "Post Quantum Migration and Legacy Signature Sunset." As of March 1, 2026, over 34 percent of all bitcoin in existence had revealed a public key on-chain. Those UTXOs are the ones a sufficiently powerful quantum computer could target. That is not 34 percent of one wallet or one exchange. That is a third of the circulating supply.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The two BIPs and what they disagree about</h2>
+
+      <p>
+        The first proposal, BIP-360, is called Pay-to-Merkle-Root, or P2MR. It was assigned on December 18, 2024. The authors are Hunter Beast, Ethan Heilman, and Isabel Foxen Duke. Its status is Draft, which means it is not activated, not consensus, and not something you can use today.
+      </p>
+
+      <p>
+        The technical move is deceptively simple. Taproot, the upgrade that went live in 2021, gave every output two ways to spend. A key-path spend, which is just a Schnorr signature and is the cheap, private default. And a script-path spend, which goes through a Merkle tree of scripts and is more flexible but more expensive. The key-path spend is what makes Taproot elegant. It is also what makes it quantum-vulnerable, because the key-path spend commits to a public key directly in the output.
+      </p>
+
+      <p>
+        P2MR takes Taproot and cuts off the key path. The output commits only to the Merkle root of a script tree. No internal key. No key-path spend. To spend a P2MR output you must reveal a script and a Merkle path. The script can be a simple signature check, a post-quantum signature check, or a more elaborate policy. The result is an address that starts with <strong>bc1z</strong> instead of the <strong>bc1p</strong> you see on Taproot. The public key is not exposed until you spend, and even then only if your script chooses to reveal one.
+      </p>
+
+      <p>
+        The tradeoff is real. Every P2MR spend is more expensive than a Taproot key-path spend, because you are always doing a script-path spend. The BIP's own numbers put a basic P2MR witness at <strong>135 bytes</strong> versus <strong>66 bytes</strong> for a Taproot key-path spend. That is roughly double the transaction weight for the same payment. In a Bitcoin with congested block space, that matters.
+      </p>
+
+      <p>
+        The design is deliberately staged. P2MR, on its own, does not add post-quantum signatures to Bitcoin. It only creates the output type that would let post-quantum signatures be added later without another massive consensus change. The BIP authors explicitly frame this as a first step. They call the approach "prepared not scared." Add the output type now, add the post-quantum signatures later, in a separate upgrade, when the algorithms are actually tested.
+      </p>
+
+      <p>
+        The second proposal, BIP-361, is the more aggressive one. It was assigned February 11, 2026. Jameson Lopp is listed as the lead author. Where BIP-360 builds a voluntary quantum-resistant output type and lets users opt in over time, BIP-361 wants a mandatory sunset on the old cryptography. Phase A disallows sending funds to quantum-vulnerable addresses. Phase B restricts ECDSA and Schnorr spends entirely by encumbering them with a quantum-safe rescue protocol, triggered by a well-publicized flag day five years after activation.
+      </p>
+
+      <p>
+        The two BIPs are not the same project. They are different philosophies. BIP-360 is opt-in and incremental. BIP-361 is mandatory and time-boxed. The Bitcoin community will have to fight that out, the same way it fought over every previous soft fork. The fact that the fight has started is the signal.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The Satoshi stash and the burn faction</h2>
+
+      <p>
+        This is where the conversation gets uncomfortable. Satoshi Nakamoto mined roughly 1.1 million bitcoin in the first year of the chain. Those coins sit in pay-to-public-key outputs, the oldest and most exposed output type. So do the payouts from early CPU mining, when the network was small enough that nobody worried about public key exposure. Any sufficiently advanced quantum computer would go after these first, because they are stationary targets with exposed keys and enormous value attached.
+      </p>
+
+      <p>
+        The BIP-361 motivation is blunt about what happens next. Assuming quantum computers maintain their current trajectories and overcome existing engineering obstacles, there is a near certain chance that all P2PK private keys will be found and used to steal the funds. The proposal also warns that we may not know an attack is underway. A quantum attacker could compute private keys for known public keys, then transfer the funds weeks or months later in a covert bleed, never alerting chain watchers. Q-Day might only be known well after the fact.
+      </p>
+
+      <p>
+        There is a faction that takes this seriously enough to propose the nuclear option. The QBIP proposal, at <a href="https://qbip.org" class="text-slate-700 underline hover:text-slate-900">qbip.org</a>, argues that if a quantum computer appears and starts draining old outputs, the right move is a consensus change that burns the vulnerable coins rather than letting an attacker take them. The logic is brutal but internally consistent. If you cannot secure Satoshi's stash, you remove it from the supply rather than hand it to an attacker. Tadge Dryja, one of the Lightning Network's original authors, proposed something adjacent with Lifeboat, a commit-reveal scheme that would quantum-proof transactions through pre-commitment.
+      </p>
+
+      <p>
+        These are not crackpot positions. They are the positions people take when they stop being able to assume the cryptography will hold forever.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">How this connects to NIST and the rest of the world</h2>
+
+      <p>
+        In August 2024, NIST released its first three finalized post-quantum cryptography standards. <strong>FIPS 203</strong> standardizes ML-KEM for key exchange. <strong>FIPS 204</strong> standardizes ML-DSA for signatures. <strong>FIPS 205</strong> standardizes SLH-DSA, a hash-based signature scheme. The BIP-360 text references ML-DSA and SLH-DSA by name as the algorithms being considered for a future Bitcoin post-quantum signature opcode. The NIST standards are the reason this conversation moved out of theory.
+      </p>
+
+      <p>
+        The US federal government has its own clock. CNSA 2.0, the Commercial National Security Algorithm Suite, mandates post-quantum cryptography in software and networking equipment by 2030, with browsers and operating systems fully upgraded by 2033. NIST IR 8547 disallows elliptic curve cryptography in federal systems after 2035, with an exception for hybrid schemes that pair ECC with a post-quantum algorithm. These are procurement mandates, not scientific predictions. They tell you when the buyers with the biggest budgets plan to stop trusting the curves Bitcoin currently runs on.
+      </p>
+
+      <p>
+        I am not saying Bitcoin should calibrate to a federal procurement calendar. I am saying the same calendar is what made the BIP authors sit down and write the documents.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What the quantum hardware actually looks like</h2>
+
+      <p>
+        I want to be careful here, because the quantum computing timeline is where the most honest people disagree most loudly. What is public and verifiable as of mid-2026 is this.
+      </p>
+
+      <p>
+        IBM's largest single quantum processor is the <strong>Heron r2</strong>, at 156 qubits. The entire IBM Quantum fleet has a total of roughly 2,300 noisy physical qubits across more than 30 machines. IBM's roadmap commits to delivering the first large-scale, fault-tolerant quantum computer by 2029. That is not a machine that can break Bitcoin. It is the date the company says it will have one that can do useful error-corrected work at all.
+      </p>
+
+      <p>
+        The most sober estimate of what breaking elliptic curve cryptography actually requires comes from Google Quantum AI. In May 2025, they published a preprint showing that a quantum computer with roughly 1 million noisy qubits running for one week could, in theory, break 2,048-bit RSA. That is a 20-fold reduction from their 2019 estimate of 20 million qubits. The reduction came from better algorithms and better error correction, not better hardware.
+      </p>
+
+      <p>
+        Bitcoin uses ECDSA on the secp256k1 curve, which is a 256-bit elliptic curve. Academic literature, the Webber et al. estimates that get cited in this debate, puts the requirement at roughly 2,330 to 4,099 logical qubits and millions of physical qubits to break it. Fewer than RSA-2048 in absolute terms, because the keys are smaller, but the same order of magnitude in hardware. Nobody has that machine. Nobody is close to having that machine.
+      </p>
+
+      <p>
+        The McKinsey quantum monitor, cited in BIP-361, estimates a cryptographically relevant quantum computer could arrive as early as 2027 to 2030. That is the aggressive end. Other estimates push it out to 2035 or beyond. The honest answer is that nobody knows, and the disagreement between credible people is wide.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Why the developers are moving anyway</h2>
+
+      <p>
+        The BIP-360 authors are explicit about this. They take no position on any specific quantum computing timeline. Their argument is simpler. The possibility of quantum advancement alone may be influencing adoption and broad confidence in the network. Users' fear of quantum computers is worth addressing regardless of whether cryptographically relevant quantum computers ever become viable.
+      </p>
+
+      <p>
+        BIP-361 makes a different argument. Coordinating wallets, exchanges, miners, and custodians historically takes years. The longer the migration is postponed, the harder it becomes. A clear, time-boxed pathway is the only credible defense.
+      </p>
+
+      <p>
+        Both arguments land on the same conclusion. Start now, because the cost of starting late is not linear. The BIP-361 motivation warns that Q-Day may only be known well after it happens, if the attacker withholds broadcasting transactions to postpone revealing their capabilities. You do not get a warning siren. You get missing coins and a debate about whether the theft is already underway.
+      </p>
+
+      <p>
+        That is the honest framing. You do not insure your house because you are certain it will burn down. You insure it because the cost of being uninsured is higher than the cost of the premium.
+      </p>
+
+      <p>
+        The premium, in Bitcoin's case, is two BIP drafts, the NIST standards pipeline, and the slow, contentious, conservative work of getting a soft fork through consensus. It is unglamorous work. It is also the only way a trillion-dollar system can move without breaking itself.
+      </p>
+
+      <p>
+        The finish line is not a deadline. It is a curve in the road that has been visible for a long time. The people building Bitcoin have started braking anyway, because the cost of braking late, on a curve, with a trillion dollars in the car, is not a cost anyone wants to pay.
+      </p>
+
+      <div class="mt-12 p-8 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col md:flex-row gap-6 items-center justify-between">
+        <div>
+          <h4 class="font-bold text-slate-900 mb-1">Audit Your Custody Posture</h4>
+          <p class="text-sm text-slate-600">If your coins sit in reused addresses or exposed Taproot outputs, a quantum migration plan is part of a modern custody review.</p>
+        </div>
+        <a href="https://cal.com/banitama/15min" class="px-6 py-3 bg-slate-900 text-white font-semibold text-sm rounded-lg hover:bg-slate-800 transition-colors uppercase tracking-wider text-center shrink-0">
+          Book Audit
+        </a>
+      </div>
+
+      <p class="text-sm text-slate-500 mt-8 leading-relaxed">
+        <strong>Sources:</strong> <a href="https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki" class="text-slate-700 underline hover:text-slate-900">BIP-360: Pay-to-Merkle-Root (P2MR)</a> · <a href="https://github.com/bitcoin/bips/blob/master/bip-0361.mediawiki" class="text-slate-700 underline hover:text-slate-900">BIP-361: Post Quantum Migration</a> · <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" class="text-slate-700 underline hover:text-slate-900">NIST Post-Quantum Standards</a> · Related reading: <a href="/insights/why-your-next-hardware-wallet-should-have-a-keyboard" class="text-slate-700 underline hover:text-slate-900">Why Your Next Hardware Wallet Needs a Keyboard</a>
+      </p>
+    </section>
+  </article>
+</Layout>
