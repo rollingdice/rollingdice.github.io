@@ -1,0 +1,141 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Lightning &amp; Regulation</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        Spending Bitcoin in the Eurozone After MiCA: Wavespace and the Lightning Gap
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        The EU's July 1 deadline made custodial Bitcoin slower, more invasive, and harder to spend. A small open-source Lightning wallet called Wavespace sits in the gap MiCA deliberately left open — outside the regulation, on your phone, with your keys.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-07-06">July 6, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        The email arrived in late June. Your exchange said something urgent about MiCA compliance, a license, and a deadline of July 1. Maybe it asked you to verify your identity <em>again</em>. Maybe it threatened to restrict your account. You complied, the deadline passed, and you assumed that was the end of the story.
+      </p>
+
+      <p>
+        It was not.
+      </p>
+
+      <p>
+        The exchanges that survived July 1 now operate under the EU's first comprehensive crypto rulebook. That is mostly good news for anyone who keeps coins on a platform. But it also tightened the screws on what those platforms can do for you, how much friction you face moving money in and out, and which services still want European customers at all. The cost of custodial Bitcoin in Europe went up. The cost of self-custody did not, and a small open-source wallet called Wavespace shows why that gap is about to matter.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What MiCA actually did to European Bitcoin users</h2>
+
+      <p>
+        MiCA stands for <strong>Markets in Crypto-Assets</strong>, and it has been fully in force since December 30, 2024. Think of it as one rulebook that replaces 27 patchy national ones. A company that gets a MiCA license in one country can passport it across the entire bloc. For the companies that hold your Bitcoin on an exchange, this is the new law of the land.
+      </p>
+
+      <p>
+        The part that generated all the emails was Article 143. It gave exchanges that were already operating legally before December 2024 a temporary grace period to either get a full MiCA license or leave. That grace period expired on July 1, 2026. Exchanges that did not meet the bar wound down their European operations. The ones that stayed sent you those compliance emails because they were racing the same clock.
+      </p>
+
+      <p>
+        I wrote about the self-custody angle in detail already. The short version is this: MiCA regulates service providers. It does not regulate individuals who hold their own keys. <a href="/insights/mica-july-1-deadline-self-custody-exemption-what-eu-users-need-to-know" class="text-amber-600 font-semibold hover:underline">Recital 83 of the law puts it in black and white</a>. Hardware or software providers of non-custodial wallets should not fall within the scope of this regulation. A wallet where you control the seed phrase is outside MiCA entirely. The hardware wallet in your drawer, the steel plate with 12 words stamped into it, and a non-custodial Lightning wallet on your phone are all invisible to the regulation.
+      </p>
+
+      <p>
+        That exemption is not a loophole the EU will close next year. It was a deliberate choice. Lawmakers wanted to protect consumers who rely on exchanges. They did not want to criminalize the act of holding your own keys. Read the regulation and the line is clean. Custodied Bitcoin is regulated, protected by investor rules, and dependent on a third party. Self-custodied Bitcoin is none of those things.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Why spending, not just holding, is the hard part</h2>
+
+      <p>
+        Holding your own keys is a solved problem in 2026. Spend a hundred euros on a Coldcard, write down 12 words, and you are done. The hard part is spending Bitcoin the way you would spend euros. Walking into a shop, scanning a QR code, paying for coffee, and walking out. That sounds trivial. On Bitcoin's base layer it is not.
+      </p>
+
+      <p>
+        An on-chain transaction needs a block, pays a fee that spikes when the network is busy, and takes 10 minutes on average to confirm. Try paying for a sandwich with that. The merchant will not wait. You will not either. This is why the Lightning Network exists. Lightning is a second layer that lets two parties open a payment channel once, then send each other tiny instant payments off-chain for near-zero fees. It is how you actually buy coffee with Bitcoin.
+      </p>
+
+      <p>
+        The problem with Lightning has always been setup. Running a full Lightning node means managing channels, watching for fraudulent closures, keeping the node online, and dealing with inbound liquidity. That is fine for a hobbyist. It is not fine for someone who just wants to pay for lunch in Berlin. Most Lightning wallets that normal people use solve this by being custodial. The company runs the node. The company holds the keys. You hold an IOU. That works, and the fees are low, but you have given up custody to get it, which puts you right back in the MiCA-regulated lane you were trying to escape.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What Wavespace is</h2>
+
+      <p>
+        Wavespace is a self-custodial Lightning wallet. It runs on iOS and Android, it is open source, and it holds your keys on your device. There is no cloud backend and no KYC. No company can freeze your balance because no company holds it. You create a wallet with a BIP39 mnemonic, back it up, and the Lightning payments flow from there.
+      </p>
+
+      <p>
+        The interesting part is how it moves Lightning without making you run a node. Wavespace is built on the <strong>Breez SDK Spark</strong>, which is a nodeless Lightning implementation. Instead of spinning up a Lightning node on your phone and babysitting channels, the SDK acts as a lightweight client that talks to a Lightning Service Provider. The LSP runs the actual node and handles routing and liquidity. Your keys never leave your device. The LSP cannot seize your funds because it does not hold them. It just helps your funds find a path to the recipient.
+      </p>
+
+      <p>
+        This is the tradeoff that matters. You give up the overhead of running a node. You keep custody of your coins. You get the speed and low fees of Lightning without handing control to a third party. And because no third party is holding your Bitcoin, MiCA does not apply to you.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Why this combination matters right now in Europe</h2>
+
+      <p>
+        Before July 1, a European Bitcoin user had a simple path to spending. Keep coins on an exchange, use the exchange's Lightning or off-ramp integration, and accept the custodial tradeoff. That path still exists for the exchanges that kept their MiCA license. But the friction is higher now. Stricter KYC and anti-money-laundering checks mean more identity verification, tighter transfer limits, and more delay when moving funds in and out of custodial platforms.
+      </p>
+
+      <p>
+        For someone who wants to actually spend Bitcoin rather than just hold it, the calculus shifted. The custodial route got slower and more invasive. The non-custodial route, which used to mean running your own Lightning node, got easier. A wallet like Wavespace, which is shipping right now on a phone with no KYC and no custody, fits into a gap that MiCA deliberately left open.
+      </p>
+
+      <p>
+        The gap is not theoretical. Recital 83 of MiCA says non-custodial wallet providers do not fall within the scope of the regulation. Wavespace does not hold user funds. It holds keys on the user's device, and the LSP it talks to handles routing without touching the balance. Whether you are in Frankfurt, Lisbon, or Tallinn, the regulatory question is the same as it was before MiCA existed. The wallet is yours. The keys are yours. The law leaves you alone.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The honest limits</h2>
+
+      <p>
+        I am not going to pretend Wavespace is a finished product. It is not. The codebase is a senior project for Wave.Space and Florida Gulf Coast University, and the README is candid about what is missing. There is no multi-device sync. No cloud backup. LNURL-Withdraw is not wired up as a dedicated flow. The Breez SDK Spark itself is still in beta, with Breez's own site noting that not all features will be available yet. If your threat model demands a mature, battle-tested production wallet with years of audit history, this is not it. Use Wallet of Satoshi or Phoenix today and accept the custody tradeoff. Use Wavespace if you want to see what the non-custodial Lightning future looks like on a phone, today, with real keys you actually control.
+      </p>
+
+      <p>
+        There is also the LSP question. Nodeless Lightning moves trust from a full node operator to a Lightning Service Provider that does your routing. Breez is the LSP here. If Breez goes down, your ability to route new payments degrades until you reconnect or switch providers. Your funds are not lost, because they are on-chain and you hold the keys, but the smooth paying-for-coffee experience depends on that LSP staying up. Anyone telling you nodeless Lightning is trustless is selling something. It is less trust than running a custodial wallet, and more trust than running your own node. Where you land on that spectrum is a judgment call about your own convenience and threat model.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What this means for self-custody in 2026</h2>
+
+      <p>
+        For years the Bitcoin self-custody conversation was about storage. Buy a hardware wallet, write down your seed, hide the steel plate. That advice is still correct and still necessary. But storage is only half of what money is supposed to do. Money you can only hold but never spend is not money. It is a collectible.
+      </p>
+
+      <p>
+        The combination that is actually coming together in Europe right now is this. MiCA drew a clean line around custodial services and left self-custody alone. The exchanges on the regulated side of that line got slower, more invasive, and more selective about who they serve. On the unregulated side, wallets like Wavespace are proving that you do not need to run a Lightning node to spend Bitcoin without a custodian. The technology is not finished. The regulation is. And the gap between the two is exactly the space where self-custody, the real kind, is going to grow.
+      </p>
+
+      <p>
+        If you self-custody Bitcoin and you have not thought about how you would spend it, that is the question to ask next. Not which hardware wallet to buy. You probably already have one. How do you pay someone a fraction of a euro in Bitcoin, instantly, from keys only you control, without asking an exchange for permission.
+      </p>
+
+      <p>
+        Wavespace answers that question imperfectly. But it answers it without a custodian, without KYC, and without a license from anyone. In post-MiCA Europe, that is the combination worth paying attention to.
+      </p>
+
+      <div class="mt-12 p-8 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col md:flex-row gap-6 items-center justify-between">
+        <div>
+          <h4 class="font-bold text-slate-900 mb-1">Spend Bitcoin Without a Custodian</h4>
+          <p class="text-sm text-slate-600">Get a structured review of your self-custody spending stack — Lightning wallet, LSP trust model, and on-ramp/off-ramp flow.</p>
+        </div>
+        <a href="https://cal.com/banitama/15min" class="px-6 py-3 bg-slate-900 text-white font-semibold text-sm rounded-lg hover:bg-slate-800 transition-colors uppercase tracking-wider text-center shrink-0">
+          Book a Review
+        </a>
+      </div>
+
+      <p class="mt-8 text-xs text-slate-400 leading-relaxed">
+        Sources: <a href="https://github.com/CodeByMAB/wavespace-senior-project" class="text-slate-500 underline hover:text-slate-700">CodeByMAB/wavespace-senior-project</a> (GitHub README and docs/BRS.md); <a href="https://breez.technology/sdk/" class="text-slate-500 underline hover:text-slate-700">Breez SDK Spark</a> (breez.technology); Regulation (EU) 2023/1114, Recital 83 (EUR-Lex). Related reading: <a href="/insights/mica-july-1-deadline-self-custody-exemption-what-eu-users-need-to-know" class="text-slate-500 underline hover:text-slate-700">MiCA's July 1 Deadline: What EU Bitcoin Users Actually Need to Know</a>. This article is for education only and is not legal or trading advice. Regulatory status of non-custodial wallets and LSP arrangements may vary by member state and is subject to interpretive guidance from ESMA and national regulators.
+      </p>
+    </section>
+  </article>
+</Layout>
