@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Bitcoin Protocol</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        Bitcoin Core 31.1 and BIP-110: Why the Protocol War Is Your Problem
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        Bitcoin Core 31.1 fixes a privacy bug that could leak your IP address. BIP-110, a separate proposal heading toward forced activation in August, could invalidate wallet transactions built on Miniscript and certain Taproot scripts. Both affect your self-custody setup in very different ways.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-07-13">July 13, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        Bitcoin Core 31.1 shipped on July 8 with a fix for a privacy bug that could expose your IP address when broadcasting transactions. If you run a node, update it. But while the Core team patched that leak, a separate group of developers was pushing through a consensus change called <a href="https://github.com/bitcoin/bips/blob/master/bip-0110.mediawiki" class="text-amber-600 hover:text-amber-700 underline">BIP-110</a> that could invalidate certain wallet transactions.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The privacy fix you needed</h2>
+
+      <p>
+        The bug lived in a feature called <code class="text-sm bg-slate-100 px-1.5 py-0.5 rounded">-privatebroadcast</code>, introduced in Bitcoin Core 31.0. The feature was supposed to let you broadcast transactions through privacy networks like Tor instead of leaking your IP to random peers. Instead, under certain conditions, connections fell back to clearnet. Your transaction went through. Your IP address went with it.
+      </p>
+
+      <p>
+        The Bitcoin Core team <a href="https://bitcoincore.org/en/2026/06/06/privatebroadcast-ip-leak/" class="text-amber-600 hover:text-amber-700 underline">published a warning on June 6</a>. Version 31.1 fixes it. If you run a node, update. The release also patches a chainstate database issue that was causing excessive disk reads and writes during normal operation, quietly degrading your node's storage until it wears out. You would not notice either bug until the damage was done.
+      </p>
+
+      <p>
+        <a href="/insights/wasabi-2-8-0-and-the-state-of-bitcoin-privacy-wallets-2026" class="text-amber-600 hover:text-amber-700 underline">I have written before</a> about how Bitcoin privacy tools fail when they depend on infrastructure someone else controls. The privatebroadcast bug is the same pattern at the protocol level. You turned on a privacy feature. It leaked your IP. You had no way to know.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">A consensus change you did not ask for</h2>
+
+      <p>
+        BIP-110 is formally titled "Reduced Data Temporary Softfork." It was authored under the pseudonym Dathon Ohm, with Luke Dashjr credited for the original draft. The proposal adds seven consensus rules that limit how much data Bitcoin transactions can carry. New output scriptPubKeys cannot exceed 34 bytes. OP_RETURN outputs are capped at 83 bytes. Data pushes and witness items are limited to 256 bytes. Several Taproot features become invalid, including OP_SUCCESS opcodes and the OP_IF instruction in Tapscripts.
+      </p>
+
+      <p>
+        The stated target is Ordinals, inscriptions, Runes, and BRC-20 tokens. These protocols embed arbitrary data in Bitcoin transactions. Supporters of BIP-110 call this spam. The people running these protocols call it paid block space. The BIP's motivation section is explicit. Bitcoin, in the words of the proposal, should "do one thing, and do it well," and that thing is money, not data storage.
+      </p>
+
+      <p>
+        I am sympathetic to the anti-spam argument. Block space is finite. Node operators store every byte forever. But BIP-110 has a self-custody problem, and nobody on the proponent side seems to have thought it through.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Why your wallet might not survive BIP-110</h2>
+
+      <p>
+        The proposal bans OP_IF and OP_NOTIF in Tapscripts. Miniscript, a framework that some modern wallets use to compose complex spending conditions, relies on OP_IF. Farside Investors pointed out in late June that wallets supporting Miniscript could still generate addresses built on the now-banned scripts after activation. You send bitcoin to one of those addresses. The transaction looks valid. But the spending conditions required to move those coins are no longer valid under the new consensus rules. Your bitcoin becomes unspendable.
+      </p>
+
+      <p>
+        Bitcoin Knots, one of the node implementations that enforces BIP-110, could itself create these incompatible addresses. That is the software telling you your coins are safe while it generates addresses that will lock them.
+      </p>
+
+      <p>
+        The proposal also bans new pay-to-public-key (P2PK) outputs. P2PK was used extensively in Bitcoin's early days and currently backs more than 1.7 million BTC. Spending existing P2PK outputs would still work because of grandfathering. Creating new ones would not.
+      </p>
+
+      <p>
+        Grandfathering means UTXOs created before activation are exempt from all new rules. Your existing Bitcoin and existing inscriptions remain untouched. The rules apply only to new outputs created at or after the activation height. This is the right design choice. But it does not solve the wallet compatibility problem, because the danger is not in spending old coins. It is in receiving new ones at addresses your wallet generated without knowing they would become invalid.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">How BIP-110 forces activation without miners</h2>
+
+      <p>
+        Normal Bitcoin soft forks use a 95% miner signaling threshold. BIP-110 uses 55%. If miners do not reach that threshold through voluntary signaling, a mandatory signaling window opens at block 961,632, projected for early August. During that window, nodes running BIP-110-enforcing software reject any block that does not signal support. Lock-in happens no later than block 963,648. Activation follows at block 965,664, near September 1, 2026.
+      </p>
+
+      <p>
+        As of July 2026, miner signaling sits between 0.4% and 0.8% of blocks. Ocean Mining produces most of the signaling blocks. No major pool has committed. Foundry USA controls about a third of network hashrate. Antpool controls about 14%. Neither has moved. F2Pool has refused outright.
+      </p>
+
+      <p>
+        So the mandatory window is what matters. Enforcing nodes, running Bitcoin Knots, will reject non-signaling blocks. Non-enforcing nodes, running Bitcoin Core or other implementations, will accept them. If both sides hold their ground, the chain splits. BIP-110 includes no replay protection because it was not designed to produce a chain split. If a split happens anyway, your transactions could be valid on both chains at once.
+      </p>
+
+      <p>
+        Bitcoin Core has not endorsed the proposal. An implementation submitted to Core has not been merged. Bitcoin Knots runs on somewhere between 8% and 23% of reachable nodes depending on the metric. Jameson Lopp argues that cheap Tor nodes inflate those counts. Supporters point to a steady adoption curve since 2025.
+      </p>
+
+      <p>
+        There is a separate event in August that keeps getting bundled with BIP-110. Paul Sztorc's eCash hard fork targets block 964,000, around August 21. It would create a separate chain with a 1:1 airdrop. The two are unrelated. BIP-110 is a soft fork that tightens rules on the existing chain. eCash is a hard fork that creates a new one.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The people pushing back</h2>
+
+      <p>
+        Adam Back says BIP-110 will "self-fork or fail to activate" by August 7. Michael Saylor calls it a Bitcoin iatrogenic proposal, harm caused by the treatment itself. Peter Todd embedded the full BIP-110 text inside a compliant transaction to prove that determined data storage survives the rules. The BIP's own specification concedes this. It raises the cost of data storage. It does not eliminate it.
+      </p>
+
+      <p>
+        BIP editor Mark Erhardt, known as Murch, assigned the proposal its number while calling it "a misguided and unusually careless softfork proposal." He published it anyway because it met the repository's criteria. A BIP number signals process compliance. It does not signal endorsement.
+      </p>
+
+      <p>
+        The rules are temporary. After 52,416 blocks, roughly one year, the rules lapse on their own. No vote required. No follow-up change needed. The temporary nature is supposed to make the proposal less alarming. It should not. A one-year window where your wallet might generate addresses that lock your funds is still a year of risk. And the specification invites a longer-term successor once it expires. Some supporters favor a stricter follow-on idea called "The Cat."
+      </p>
+
+      <p>
+        Bitcoin's consensus rules should be conservative and predictable. BIP-110 is neither. It forces a change that under 1% of miners willingly support, through a mechanism designed to override them. If you hold your own keys, <a href="/insights/quantum-bitcoin-post-quantum-upgrade-race" class="text-amber-600 hover:text-amber-700 underline">protocol changes are not abstract</a>. They determine what your wallet can generate, what your node will accept, and whether the coins you receive are actually spendable.
+      </p>
+
+      <p>
+        Update your node to Bitcoin Core 31.1. The privatebroadcast fix is real and it matters. Then check whether your wallet uses Miniscript or scripts that depend on OP_IF. If BIP-110 activates in September, some addresses your wallet generates might be the last place your coins ever land.
+      </p>
+
+      <p>
+        The people trying to clean Bitcoin's block space might break the tools you use to hold it.
+      </p>
+    </section>
+  </article>
+</Layout>
