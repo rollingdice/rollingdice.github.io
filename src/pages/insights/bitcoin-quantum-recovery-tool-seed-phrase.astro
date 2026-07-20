@@ -1,0 +1,213 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Bitcoin Security</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        Bitcoin's Quantum Recovery Tool: Why Your Seed Phrase Survives Q-Day
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        A quantum computer can break your private key, but it cannot reverse the hash that produced it. Project Eleven's Q-Day recovery proof shows how your seed phrase becomes a post-quantum proof of ownership.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-07-20">July 20, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        On July 15, 2026, a security firm called Project Eleven published something that sounds impossible. A way to prove you own your Bitcoin after a quantum computer has already broken your private key. Not before. After.
+      </p>
+
+      <p>
+        The technique does not protect you from the quantum computer itself. It does something narrower and more interesting. It gives you a fallback for the day your digital signature stops being proof of anything, because the same quantum computer that stole your key can forge that signature just as easily as you can.
+      </p>
+
+      <p>
+        The CEO of Project Eleven, Alex Pruden, framed the problem bluntly. "How do you prove you still own a wallet after a quantum computer can forge its signatures? After Q-Day, once a quantum computer can derive an ECC private key from its public key, a valid signature no longer proves ownership. Both the quantum adversary and the legitimate owner are able to produce identical signatures."
+      </p>
+
+      <p>
+        I have written about the protocol-level quantum race elsewhere, covering the two Bitcoin Improvement Proposals already in the repository. <a href="/insights/quantum-bitcoin-post-quantum-upgrade-race" class="text-slate-700 underline hover:text-slate-900">BIP-360</a>, which builds a new quantum-resistant output type. BIP-361, which wants a mandatory sunset on old signatures. This piece is not about those. This is about what the individual holder needs to understand about the day signatures stop working, and the tool that might give you a second chance.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What Q-Day means for your wallet, not the network</h2>
+
+      <p>
+        Q-Day is shorthand for the moment a sufficiently powerful quantum computer can break the elliptic curve cryptography that Bitcoin uses for signatures. The key fact is that a quantum computer running Shor's algorithm can derive a private key from a public key. The person holding the quantum computer gets your private key, and once they have it, they can sign transactions from your address just like you can.
+      </p>
+
+      <p>
+        The Bitcoin at risk is not all Bitcoin equally. The distinction that matters is whether your public key is visible on-chain.
+      </p>
+
+      <p>
+        When you receive Bitcoin to an address that has never spent, your public key is not visible. It is hidden behind a hash. An attacker would need to break both the hash function and the signature scheme, which is a much harder problem. But when you spend from an address, your public key goes on-chain for everyone to see. From that moment, a quantum attacker with the right machine has the target they need.
+      </p>
+
+      <p>
+        The numbers are not small. Project Eleven runs a live tracker called the <a href="https://bitcoin-risq-list.projecteleven.com/" class="text-slate-700 underline hover:text-slate-900">Bitcoin Risq List</a>. As of July 13, 2026, it counted 7,023,925 Bitcoin across 14.1 million addresses with exposed public keys. That is about a third of the circulating supply. About 1.7 million of those are in old P2PK outputs, the earliest address type, from the first year of mining. Satoshi's stash of roughly 1.1 million Bitcoin is in there, spread across about 22,000 addresses. Coinbase's Quantum Advisory Council published the same 7 million figure in June 2026, in a report authored by their head of cryptography, Yehuda Lindell.
+      </p>
+
+      <p>
+        There is a detail that matters and that does not get talked about enough. BIP-361, one of the two migration proposals in the Bitcoin repository, warns that Q-Day might pass unnoticed. An attacker who derives your private key does not need to move the coins immediately. They could wait weeks or months, draining funds in a slow bleed that chain watchers would have no way to distinguish from the legitimate owner spending. You may not get a warning siren. You would get missing coins and a debate about whether the theft was already underway.
+      </p>
+
+      <p>
+        That is the scale of the problem.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The thing your seed phrase does that a quantum computer cannot undo</h2>
+
+      <p>
+        This is the technical insight that makes Project Eleven's recovery tool possible. It took me a few passes to wrap my head around it, and I want to explain it as clearly as I can.
+      </p>
+
+      <p>
+        Modern Bitcoin wallets do not use a single key. They use a tree of keys, described by BIP-32, a standard from 2012. Your seed phrase, the 12 or 24 words on the piece of metal in your safe, generates a master key. That master key generates child keys. Those child keys generate more child keys. Every address your wallet has ever produced is a leaf on that tree.
+      </p>
+
+      <p>
+        The branches between those keys use two kinds of derivation. Non-hardened derivation, where the child public key can be computed from the parent public key. And hardened derivation, where computing the child requires the parent private key. The hardened step feeds the parent private key into a hash function, HMAC-SHA512, and there is no public path through it.
+      </p>
+
+      <p>
+        Here is the critical part. A quantum computer can derive an elliptic curve private key from its public key. That is what Shor's algorithm does. But a quantum computer cannot efficiently reverse a hash function. Grover's algorithm, the quantum tool for hash inversion, only halves the security. A 256-bit hash still requires 2 to the power of 128 operations to invert. That is impractical, and the parallelization is poor enough that the real cost is even higher.
+      </p>
+
+      <p>
+        An attacker who uses a quantum computer to break your address private key gets exactly that key. They do not get the parent key it was derived from. They cannot walk up the derivation tree past a hardened step. The seed phrase, and the keys above the hardened derivation, remain yours and yours alone.
+      </p>
+
+      <p>
+        The step from your 12 or 24 words to the master key uses SHA-512 hashing. That part is quantum-safe. Your seed phrase is not a private key that a quantum computer can pull out of your public key. It is something the quantum computer cannot reach at all.
+      </p>
+
+      <p>
+        Pruden put it simply. "Even after Q-Day, an attacker who's broken your address's private key does not hold, and can't compute, the seed phrase it was derived from. Proving you know that parent key, without revealing it, is something only the real owner can do."
+      </p>
+
+      <p>
+        Your seed phrase is not just the source of your keys. It is your post-quantum proof of ownership.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">How the recovery proof works</h2>
+
+      <p>
+        Project Eleven funded Jim Posen, lead developer of the <a href="https://www.binius.xyz/" class="text-slate-700 underline hover:text-slate-900">Binius</a> zero-knowledge proof system, to build a working implementation of this idea. The concept was first proposed by Alon Sattath and Robert Wyborski, who called it "signature lifting." Olaoluwa Osuntokun, known in the Bitcoin and Lightning communities as Roasbeef, built the first working prototype on the risc0 virtual machine. Project Eleven's version, built on Binius, runs 16 times faster than Osuntokun's prior work.
+      </p>
+
+      <p>
+        The proof works like this. You take your BIP-32 extended private key, the parent key that sits above your address in the derivation tree, and feed it into a zero-knowledge proof circuit. The circuit applies one hardened derivation step and two non-hardened steps, producing the public key that hashes to your address. The proof shows that this derivation is correct. It does not reveal the parent key.
+      </p>
+
+      <p>
+        The proof commits to a message, which means it can authorize a specific transaction. Instead of proving ownership by signing with the compromised key, you prove ownership by demonstrating you know the derivation path that produced the key. The network, or a recovery protocol built on top of it, verifies the proof and lets you move your coins to a new, quantum-safe address.
+      </p>
+
+      <p>
+        The performance numbers are real. On an M5 MacBook Air, the proof generates in 243 milliseconds using four CPU cores. Verification takes 40 milliseconds. The proof is 358 kilobytes. It uses 2.1 gigabytes of memory. No GPU needed. No trusted setup. This is not theoretical. It runs.
+      </p>
+
+      <p>
+        The current implementation supports three Bitcoin address types. P2PKH, the legacy pay-to-public-key-hash format. P2WPKH, native SegWit. P2SH-P2WPKH, the nested SegWit used by early hardware wallets. Taproot support is on the roadmap but not yet shipped.
+      </p>
+
+      <p>
+        I want to be honest about the limits. This is an early prototype. It is unaudited. It does not let you recover coins on Bitcoin today. Any real recovery mechanism would need Bitcoin's protocol to recognize and verify these proofs, which means a protocol change. BIP-361's Phase 3, described in the proposal as a zero-knowledge-proof recovery path, is the natural home for it. But BIP-361 is a Draft. It has not been adopted, and there is no guarantee it will be.
+      </p>
+
+      <p>
+        This is not a tool you can use. It is a tool that proves the concept works, fast enough that a protocol could adopt it.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What you can actually do with your coins today</h2>
+
+      <p>
+        The recovery tool is a safety net for a future where migration windows exist and some people miss them. But the first line of defense is not exotic cryptography. It is boring, old-fashioned address hygiene.
+      </p>
+
+      <p>
+        If your coins sit in addresses that have never spent, your public keys are not exposed. A quantum attacker cannot target what they cannot see. This is the default state for anyone using a modern HD wallet that generates a new address for each transaction. It is also the state you destroy when you reuse an address, because spending from an address puts the public key on-chain permanently.
+      </p>
+
+      <p>
+        There is one nuance worth knowing. Reusing one address does not endanger your other addresses. Each address has its own private key derived independently from the seed. Cracking one exposed key cannot climb up to the parent or hop sideways to siblings. The damage stays local, as long as you are using a standard wallet that treats addresses as leaves, not parents.
+      </p>
+
+      <p>
+        The most exposed coins are the oldest ones. Satoshi's stash. Early CPU mining payouts. Any coins that received funds to P2PK addresses, where the public key is committed directly in the output rather than hashed behind an address. Taproot addresses, the newest format, also expose public keys on receive. That is what BIP-360 was written to fix. For a holder thinking about long-term cold storage today, plain SegWit addresses, the ones starting with <strong>bc1q</strong>, keep your public key hidden until you spend. They are the better quantum posture for coins you do not plan to touch for a decade.
+      </p>
+
+      <p>
+        The single most practical thing you can do today is verify that your wallet is generating fresh addresses and that you are not reusing them. If you are holding through a hardware wallet with a modern BIP-39 seed, you are in the lowest-exposure category. Your seed phrase is also your post-quantum proof of ownership, which means you need to protect it the way you would protect a legal document that proves you own a house. Because after Q-Day, that is exactly what it would be.
+      </p>
+
+      <p>
+        One more thing. If you share your extended public key, your xpub, with watch-only services or analytics tools, treat that as sensitive. A leaked xpub is a privacy risk today. In a post-quantum world, it becomes a security risk.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The abandoned coins question</h2>
+
+      <p>
+        Not everyone will migrate in time. Some holders are dead and their keys died with them. Some wallets are lost. Some people will see a migration announcement, not understand it, and do nothing. The question of what happens to those coins is not just a technical problem. It is a governance fight.
+      </p>
+
+      <p>
+        The Coinbase report laid out three positions. Burn the unmigrated coins after a deadline. Do nothing and let them sit until an attacker takes them. Or find a middle ground with recovery proofs, rate limiting, or pre-commitment schemes.
+      </p>
+
+      <p>
+        The fight is already on. Jameson Lopp, whose <a href="https://github.com/bitcoin/bips/blob/master/bip-0361.mediawiki" class="text-slate-700 underline hover:text-slate-900">BIP-361</a> proposal lays out the migration timeline, wrote an entire <a href="https://blog.lopp.net/against-quantum-recovery-of-bitcoin/" class="text-slate-700 underline hover:text-slate-900">essay</a> against allowing quantum recovery. He called it "tantamount to wealth redistribution" from those ignorant of quantum computers to those who won the technological race. Pieter Wuille, the Bitcoin Core developer and Blockstream researcher, was blunter. "Of course they have to be confiscated," he wrote, arguing that the ecosystem has no option but to soft fork out the ability to spend from quantum-vulnerable signature schemes.
+      </p>
+
+      <p>
+        Hunter Beast, co-author of <a href="https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki" class="text-slate-700 underline hover:text-slate-900">BIP-360</a>, takes the other side. He argued that letting quantum operators free up old coins is better than confiscating them, and that the inflationary impact would be transitory. Binance founder Changpeng Zhao floated freezing Satoshi's 1.1 million Bitcoin if unmoved once quantum threatens, with a 6 to 12 month window. Paul Sztorc, the eCash developer, proposed a hard fork that would airdrop new coins to existing holders while reassigning 500,000 of Satoshi's coins to developers.
+      </p>
+
+      <p>
+        The Project Eleven recovery proof fits into the middle ground. If the network adopts a recovery path that accepts derivation proofs, a holder who missed the migration window could still prove ownership and move their coins to a quantum-safe address. The catch is that it only works for people who still have their seed phrase. Satoshi's coins, if Satoshi is gone, have no one to generate the proof.
+      </p>
+
+      <p>
+        The governance question is not mine to answer. My observation is that the technical capability to do recovery exists now, it runs in 243 milliseconds, and the argument that nothing can be done after Q-Day is no longer accurate. The argument is about whether we should, and who decides.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What I am watching</h2>
+
+      <p>
+        The next few months matter. BIP-360 and BIP-361 are still in Draft. BTQ Technologies shipped the first working BIP-360 implementation on a testnet in March 2026. Coinbase's advisory council is pushing the industry to start migration planning now. The Trump administration signed an executive order on June 22, 2026, giving federal agencies until 2030 to move key systems to post-quantum cryptography. None of these are headlines. They are plumbing.
+      </p>
+
+      <p>
+        But the Project Eleven proof is the one I keep coming back to. It changes the failure mode. Before, if you missed a migration window and your key was exposed, the story was over. Your coins were gone with no recourse. Now there is a mechanism where your seed phrase, the thing you should be protecting anyway, is the proof that gets you a second chance.
+      </p>
+
+      <p>
+        The assumption that a quantum computer breaks Bitcoin and that is the end of it was never quite right. It breaks the signatures. It does not break the derivation. The seed phrase is more than a key. It is the receipt that says you were here first, and after Q-Day, that receipt may be the only thing the network cannot forge.
+      </p>
+
+      <div class="mt-12 p-8 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col md:flex-row gap-6 items-center justify-between">
+        <div>
+          <h4 class="font-bold text-slate-900 mb-1">Audit Your Custody Posture</h4>
+          <p class="text-sm text-slate-600">If your coins sit in reused addresses or you are unsure about your exposure, a custody review can identify the risks before Q-Day becomes a real date.</p>
+        </div>
+        <a href="https://cal.com/banitama/15min" class="px-6 py-3 bg-slate-900 text-white font-semibold text-sm rounded-lg hover:bg-slate-800 transition-colors uppercase tracking-wider text-center shrink-0">
+          Book Audit
+        </a>
+      </div>
+
+      <p class="text-sm text-slate-500 mt-8 leading-relaxed">
+        <strong>Sources:</strong> <a href="https://www.projecteleven.com/blog/proving-crypto-ownership-after-q-day" class="text-slate-700 underline hover:text-slate-900">Project Eleven: Proving Crypto Ownership After Q-Day</a> · <a href="https://bitcoin-risq-list.projecteleven.com/" class="text-slate-700 underline hover:text-slate-900">Project Eleven Bitcoin Risq List</a> · <a href="https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki" class="text-slate-700 underline hover:text-slate-900">BIP-360: Pay-to-Merkle-Root</a> · <a href="https://github.com/bitcoin/bips/blob/master/bip-0361.mediawiki" class="text-slate-700 underline hover:text-slate-900">BIP-361: Post Quantum Migration</a> · <a href="https://www.coinbase.com/blog/coinbase-quantum-advisory-council-post-quantum-migration-and-abandoned-coins" class="text-slate-700 underline hover:text-slate-900">Coinbase Quantum Advisory Council</a> · <a href="https://blog.lopp.net/against-quantum-recovery-of-bitcoin/" class="text-slate-700 underline hover:text-slate-900">Lopp: Against Quantum Recovery</a> · Related: <a href="/insights/quantum-bitcoin-post-quantum-upgrade-race" class="text-slate-700 underline hover:text-slate-900">Quantum Bitcoin: The Post-Quantum Upgrade Race Is Real</a>
+      </p>
+    </section>
+  </article>
+</Layout>
