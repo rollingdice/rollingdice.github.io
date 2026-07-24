@@ -5,10 +5,11 @@ import Layout from '../layouts/Layout.astro';
 <Layout>
 	<main class="max-w-4xl mx-auto px-6 py-20">
 		<header class="mb-20">
-			<h1 class="text-5xl font-bold tracking-tight mb-6">Sovereign Wealth Infrastructure.</h1>
+			<h1 class="text-5xl font-bold tracking-tight mb-6">Take Real Custody of Your Bitcoin.</h1>
 			<p class="text-2xl text-slate-600 leading-relaxed max-w-2xl">
-				I help individuals and businesses design and implement robust Bitcoin self-custody systems.
-				Engineering precision meets financial security.
+				If your Bitcoin sits on an exchange, you don't own it — you own an IOU.
+				I guide you through self-custody setup, step by step, on a live call.
+				You execute. I verify every step.
 			</p>
 		</header>
 
@@ -21,33 +22,46 @@ import Layout from '../layouts/Layout.astro';
 		</section>
 
 		<section class="mb-20">
-			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">Services</h2>
-			<div class="grid md:grid-cols-2 gap-6">
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors flex flex-col">
-					<div class="flex items-center gap-3 mb-4">
-						<span class="text-2xl">🔐</span>
-						<h3 class="font-bold text-lg">Self-Custody Architecture</h3>
+			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">The Offer</h2>
+			<div class="p-8 border-2 border-slate-900 rounded-2xl">
+				<div class="flex items-start justify-between mb-6 flex-wrap gap-4">
+					<div>
+						<h3 class="text-2xl font-bold mb-1">First Self-Custody Session</h3>
+						<p class="text-sm text-slate-500">60 minutes · Remote (Telegram or Zoom) · Recorded</p>
 					</div>
-					<p class="text-slate-600 leading-relaxed mb-6 flex-grow">
-						Custom multi-signature setups, hardware security module integration, and cold storage planning tailored to your threat model and operational needs.
-					</p>
-					<a href="https://cal.com/banitama/15min" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Book Architecture Session <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
-					</a>
+					<div class="text-right">
+						<span class="text-3xl font-extrabold">€99</span>
+						<p class="text-xs text-slate-400 uppercase tracking-wider">Intro pricing</p>
+					</div>
 				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors flex flex-col">
-					<div class="flex items-center gap-3 mb-4">
-						<span class="text-2xl">🔍</span>
-						<h3 class="font-bold text-lg">Security Auditing</h3>
-					</div>
-					<p class="text-slate-600 leading-relaxed mb-6 flex-grow">
-						Comprehensive review of your current infrastructure for single points of failure, operational vulnerabilities, and custodial risk exposure.
+				<ul class="space-y-3 text-slate-700 leading-relaxed mb-8">
+					<li class="flex gap-3"><span class="text-amber-500 font-bold">→</span> Threat model assessment — what are you protecting, from whom, how much</li>
+					<li class="flex gap-3"><span class="text-amber-500 font-bold">→</span> Hardware wallet recommendation for your specific situation</li>
+					<li class="flex gap-3"><span class="text-amber-500 font-bold">→</span> Live walkthrough: wallet creation, seed phrase generation, first receive + send test</li>
+					<li class="flex gap-3"><span class="text-amber-500 font-bold">→</span> Basic OPSEC: where to store your seed, what NOT to do, common mistakes</li>
+					<li class="flex gap-3"><span class="text-amber-500 font-bold">→</span> Written summary + recording sent after the session</li>
+				</ul>
+				<div class="border-t border-slate-200 pt-6 mb-6">
+					<p class="text-sm text-slate-500 mb-4">
+						Not sure if this is right for you? Start with a <strong class="text-slate-700">free 15-minute intro call</strong>.
+						We assess your situation, you decide if you want to proceed.
 					</p>
-					<a href="https://cal.com/banitama/15min" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Request Audit <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
+				</div>
+				<div class="flex flex-col sm:flex-row gap-4">
+					<a href="https://cal.com/banitama/15min" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 transition-colors">
+						Book Free Intro Call
+					</a>
+					<a href="https://t.me/banitams" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-slate-300 font-semibold rounded-xl hover:border-slate-500 transition-colors">
+						Ask on Telegram
+					</a>
+					<a href="https://wa.me/46760784309" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-slate-300 font-semibold rounded-xl hover:border-slate-500 transition-colors">
+						Ask on WhatsApp
 					</a>
 				</div>
 			</div>
+			<p class="mt-6 text-xs text-slate-400 leading-relaxed max-w-2xl">
+				I guide, you execute. I never touch your keys, seed phrases, or coins. All sessions are recorded — you get the only copy. I am not a financial advisor. No investment advice. Custody setup and education only.
+			</p>
 		</section>
 
 		<!-- Latest Insights (trimmed to 5 most recent) -->
@@ -146,7 +160,7 @@ import Layout from '../layouts/Layout.astro';
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 				<a href="https://cal.com/banitama/15min" class="block p-8 border border-slate-200 hover:bg-slate-50 transition-colors">
 				<h3 class="font-bold mb-1">Book Consultation</h3>
-				<p class="text-xs uppercase text-slate-500">Secure Strategy Session</p>
+						<p class="text-xs uppercase text-slate-500">Free 15-min intro call</p>
 			</a>
 			<a href="https://t.me/banitams" class="block p-8 border border-slate-200 hover:bg-slate-50 transition-colors">
 				<h3 class="font-bold mb-1">Telegram</h3>
