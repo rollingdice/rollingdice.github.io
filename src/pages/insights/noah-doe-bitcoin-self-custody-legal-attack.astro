@@ -1,0 +1,102 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Bitcoin Law</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        The Noah Doe Case: Why Self-Custody Is Under Legal Attack
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        A New York lawsuit is asking a court to declare 39,069 dormant Bitcoin addresses as abandoned property worth 293 billion dollars, including Satoshi's coins. Here is what the filing does, why it is weak, and why it still matters for anyone holding their own keys.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-07-13">July 13, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        In late May 2026 a Brooklyn law firm called Lewis &amp; Lin LLC filed a lawsuit that reads like a thought experiment you would invent to win an argument about Bitcoin. An anonymous plaintiff calling himself Noah Doe, alongside two Wyoming LLCs named ABC Company and XYZ Company, asked the New York County Supreme Court to declare him the legal owner of 39,069 dormant Bitcoin addresses holding roughly 3.8 million BTC. At current prices that is about 293 billion dollars. The defendant list includes the Mt. Gox hacker address holding nearly 80,000 stolen BTC, a Counterparty burn address that is provably unspendable by design, and roughly 21,923 Satoshi-era "Patoshi" addresses holding 1.1 million BTC tied to Bitcoin's creator through a well-documented mining nonce pattern. The case number is 153119/2026. The statute invoked is New York Personal Property Law Article 7-B. And the theory is that those wallets are lost property under a state law written for umbrellas left in cabs.
+      </p>
+
+      <p>
+        I want to explain what Noah Doe is asking for, why the suit is weak on its own terms, and why it still matters for anyone holding Bitcoin on their own keys. The answer is not that the court will seize your coins. The court cannot do that. The answer is that a paper title, even unenforceable on-chain, becomes a lever the moment your Bitcoin touches a regulated offramp.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What Noah Doe is asking the court to do</h2>
+
+      <p>
+        The legal vehicle is a quiet title action under CPLR § 3001, riding on New York's lost-and-found statute, <a href="https://www.nysenate.gov/legislation/laws/PEP/A7-B" class="text-amber-600 font-semibold hover:underline">Article 7-B</a>. That statute covers what happens when you find a wallet on the sidewalk, turn it in to the police, and nobody claims it within a value-keyed window. For property worth less than ten dollars, title vests in the finder one year after the find, with no police-delivery step required.
+      </p>
+
+      <p>
+        Noah Doe says he "found" the addresses in three batches between December 2024 and April 2025 using what the complaint calls "the Algorithm," a set of criteria flagging addresses dormant for at least five years, held in self-custody, and unresponsive through periods when any reasonable owner would have moved coins. He dropped USB drives listing the addresses at the NYPD 17th Precinct. In June and July 2025 a blockchain consultant sent an OP_RETURN dust message to every address, linking back to a notice page hosted by Salomon Brothers Strategic Advisors. Ninety days passed. Nobody stepped forward for 39,069 of them. The complaint says title vested on December 26, 2025, March 31, 2026, and April 14, 2026, the one-year anniversaries of each find.
+      </p>
+
+      <p>
+        The ten-dollar figure is not a typo. An unnamed expert, whose identity the filings do not disclose, pegged each address at under ten dollars on an "as-is recoverability" theory. That single number is the lever that drops the property into the statute's fastest vesting track. Alex Thorn and his team at <a href="https://www.galaxy.com/insights/research/satoshi-bitcoin-salomon-brothers-patoshi-abandoned-property-new-york-noah-doe-lawsuit" class="text-amber-600 font-semibold hover:underline">Galaxy Research</a>, whose May 2026 analysis is the most thorough public writeup I have read, put the median defendant address at 50 BTC, roughly 3.86 million dollars. The average is 97.25 BTC, about 7.5 million dollars. 99.9 percent of the addresses are worth considerably more than ten dollars. The gap between ten dollars and 293 billion dollars is nine orders of magnitude.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Why the case is weak</h2>
+
+      <p>
+        The statute Article 7-B covers was written for physical objects a finder picks up, holds, and can hand back to the owner. Noah Doe never held a single private key in this process. He read a public ledger, wrote down some addresses, put them on a USB stick, and handed the stick to the police. The police held the USB, not the Bitcoin. The original keyholders can still move the coins whenever they want, and 424 owners did exactly that after the 2025 dusting. Their addresses were dropped from the complaint. The statute imagines a finder who could give the item back if the owner appeared. Here the finder could not have delivered the coins to the police, to a claiming owner, or to himself.
+      </p>
+
+      <p>
+        Then there is the defendant list. John Doe #1 is the <a href="https://blog.wizsec.jp/2015/04/the-missing-mtgox-bitcoins.html" class="text-amber-600 font-semibold hover:underline">Mt. Gox hacker address</a>. Those are stolen coins, actively tracked for over a decade, contested in an ongoing recovery proceeding. They are not abandoned by any definition. John Doe #104 is a Counterparty burn address, which is provably unspendable because no private keys for it exist. Nobody ever owned it. The 21,923 Satoshi-era Patoshi addresses are the most closely watched coins in the asset's history. They are the opposite of forgotten. The defendant set also overlaps almost entirely with a list of 16,404 addresses that Craig Wright swore were his in the Kleiman v. Wright litigation before a UK court <a href="https://www.wired.com/story/craig-wright-the-self-styled-creator-of-bitcoin-handed-suspended-prison-sentence/" class="text-amber-600 font-semibold hover:underline">found him in contempt</a> in 2024. Two years later, Noah Doe is trying to claim the same coins through a New York abandoned-property action. The coins still have not moved.
+      </p>
+
+      <p>
+        The service of process is its own problem. In May 2026 the court authorized alternative service by onchain message, and 98 batch transactions fired off 546-satoshi dust payments carrying an OP_RETURN linking to a pleadings page hosted at ilawconotices.com. An affiant named Carlos J. Voltron signed the verification. Nobody can locate Carlos Voltron. The closest match for the name is a 2008 satirical article in The Onion titled "Struggling Mets Combine To Form Carlos Voltron." The onchain service itself borrows from Ethereum NFT precedent, which works there because Ethereum is account-based and wallets surface incoming tokens. Bitcoin behaves in the opposite way. Most Bitcoin wallets hide or filter dust by default, and the payloads look identical to spam and to address-poisoning attacks. A legal notice delivered in a format the target's software is built to suppress is a notice that does not reach the target.
+      </p>
+
+      <p>
+        My read is that the plaintiffs know the case is a long shot. The complaint stacks five arguments and every one has to hold for the next to matter. Several of the links are missing entirely, and at least one traces back to a joke in The Onion.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Why it still matters to you</h2>
+
+      <p>
+        Even a complete victory gives Noah Doe a piece of paper and nothing else. He would not receive a single private key. He could not move a single coin. "Not your keys, not your coins" applies to him as squarely as it does to anyone else.
+      </p>
+
+      <p>
+        The real value of a New York judgment is what Galaxy calls a cloud on title. If any of those 3.8 million BTC ever surface at a regulated exchange or custodian, the plaintiffs can wave the judgment at that venue and try to freeze the coins, drag the holder into court, and force them to prove ownership. That is the lever. Not seizure through the blockchain. Seizure through the offramp.
+      </p>
+
+      <p>
+        This is where self-custody holders should pay attention. If you hold Bitcoin on your own keys and never touch an exchange, the Noah Doe machinery has no purchase on you. The case targets the interface between self-custody and the regulated financial system, the moment Bitcoin becomes dollars, euros, or a custodial balance somewhere.
+      </p>
+
+      <p>
+        There are two practical implications worth thinking through. The first is inheritance. If you die without a documented recovery path, your wallet looks identical on-chain to a wallet whose owner walked away. Heirs trying to claim it have to prove standing in a legal system with no established path for private keys. A clean inheritance plan keeps your wallet out of the dormancy pool. The second is the multi-year cold storage pattern. If you are the kind of holder who buys and does not touch for a decade, your wallet matches Noah Doe's "Algorithm" almost exactly. Whether or not the court accepts the framing, the strategy of holding without touching for years now carries a legal profile alongside the technical one.
+      </p>
+
+      <p>
+        I should be clear about one thing. This is not a reason to move your coins around to dodge a statute. Moving coins to prove you are alive is conceding the premise that dormancy is suspicious. It is a reason to build a chain of custody you actually control, meaning a documented inheritance plan and recovery material split across people and devices you trust. If your wallet ever surfaces at a regulated venue decades from now, the paper trail should say "this wallet was never abandoned, here is the plan that governed it," not "nobody has any idea who owns this."
+      </p>
+
+      <p>
+        If you want a deeper look at why relying on someone else's custody is fragile, read our breakdown of <a href="/insights/why-your-next-hardware-wallet-should-have-a-keyboard" class="text-amber-600 font-semibold hover:underline">why your next hardware wallet should have a keyboard</a>. The Coldcard Q is built for exactly the kind of air-gapped sovereignty these legal moments reward.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What to watch</h2>
+
+      <p>
+        The court will take months to rule. Justice Kathy J. King is assigned after a recusal and a handoff. The Digital Chamber has filed an amicus brief. According to <a href="https://bitcoinmagazine.com/news/anonymous-plaintiff-seeks-legal-bitcoin" class="text-amber-600 font-semibold hover:underline">Bitcoin Magazine's coverage</a>, this is believed to be the first attempt in US history to claim title to Bitcoin under a lost-and-found property statute. The most likely outcome is a narrow ruling that does not transfer ownership but does not dismiss the doctrine either, leaving the question open for future filings. The second most likely is dismissal on jurisdictional grounds. The least likely but most consequential is a ruling that treats Bitcoin as escheatable property, which would invite a flood of copycat filings against any address that looks dormant.
+      </p>
+
+      <p>
+        None of those outcomes change what you should do today. The lawsuit is a reminder that "hold and forget" carries legal risk on top of technical risk, and that the law is starting to draw distinctions the blockchain never did. Your defense is not activity on-chain. Your defense is a custody plan that makes the legal question moot before anyone asks it.
+      </p>
+    </section>
+  </article>
+</Layout>
