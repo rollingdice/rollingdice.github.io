@@ -7,7 +7,7 @@ import Layout from '../layouts/Layout.astro';
 		<header class="mb-20">
 			<h1 class="text-5xl font-bold tracking-tight mb-6">Sovereign Wealth Infrastructure.</h1>
 			<p class="text-2xl text-slate-600 leading-relaxed max-w-2xl">
-				I help individuals and businesses design and implement robust Bitcoin self-custody systems. 
+				I help individuals and businesses design and implement robust Bitcoin self-custody systems.
 				Engineering precision meets financial security.
 			</p>
 		</header>
@@ -20,7 +20,37 @@ import Layout from '../layouts/Layout.astro';
 			</div>
 		</section>
 
-		<!-- New Educational Content Block -->
+		<section class="mb-20">
+			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">Services</h2>
+			<div class="grid md:grid-cols-2 gap-6">
+				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors flex flex-col">
+					<div class="flex items-center gap-3 mb-4">
+						<span class="text-2xl">🔐</span>
+						<h3 class="font-bold text-lg">Self-Custody Architecture</h3>
+					</div>
+					<p class="text-slate-600 leading-relaxed mb-6 flex-grow">
+						Custom multi-signature setups, hardware security module integration, and cold storage planning tailored to your threat model and operational needs.
+					</p>
+					<a href="https://cal.com/banitama/15min" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
+						Book Architecture Session <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
+					</a>
+				</div>
+				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors flex flex-col">
+					<div class="flex items-center gap-3 mb-4">
+						<span class="text-2xl">🔍</span>
+						<h3 class="font-bold text-lg">Security Auditing</h3>
+					</div>
+					<p class="text-slate-600 leading-relaxed mb-6 flex-grow">
+						Comprehensive review of your current infrastructure for single points of failure, operational vulnerabilities, and custodial risk exposure.
+					</p>
+					<a href="https://cal.com/banitama/15min" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
+						Request Audit <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Latest Insights (trimmed to 5 most recent) -->
 		<section class="mb-20">
 			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">Latest Insights</h2>
 			<div class="space-y-6">
@@ -85,10 +115,9 @@ import Layout from '../layouts/Layout.astro';
 						why it is weak, and why it still matters for anyone holding their own keys.
 					</p>
 					<a href="/insights/noah-doe-bitcoin-self-custody-legal-attack" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">→</span>
+						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
 					</a>
 				</div>
-
 				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
 					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">EU Regulation</span>
 					<h3 class="text-2xl font-bold mb-3">
@@ -102,131 +131,31 @@ import Layout from '../layouts/Layout.astro';
 						bitcoin holders should do about it.
 					</p>
 					<a href="/insights/mica-self-custody-eu-bitcoin-survival-guide" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">→</span>
-					</a>
-				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
-					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Bitcoin Protocol</span>
-					<h3 class="text-2xl font-bold mb-3">
-						<a href="/insights/quantum-bitcoin-post-quantum-upgrade-race" class="hover:underline">
-							Quantum Bitcoin: The Post-Quantum Upgrade Race Is Real
-						</a>
-					</h3>
-					<p class="text-slate-600 mb-6 leading-relaxed">
-						Two Bitcoin Improvement Proposals landed in eight months and they disagree on the right way forward.
-						BIP-360 builds an opt-in quantum-resistant output type. BIP-361 wants a mandatory sunset on the old cryptography.
-						One third of all bitcoin has an exposed public key on-chain already.
-					</p>
-					<a href="/insights/quantum-bitcoin-post-quantum-upgrade-race" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">→</span>
-					</a>
-				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
-					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Lightning &amp; Regulation</span>
-					<h3 class="text-2xl font-bold mb-3">
-						<a href="/insights/spending-bitcoin-eurozone-after-mica-wavespace-lightning" class="hover:underline">
-							Spending Bitcoin in the Eurozone After MiCA: Wavespace and the Lightning Gap
-						</a>
-					</h3>
-					<p class="text-slate-600 mb-6 leading-relaxed">
-						The EU's July 1 deadline made custodial Bitcoin slower, more invasive, and harder to spend.
-						A small open-source Lightning wallet called Wavespace sits in the gap MiCA deliberately left open —
-						outside the regulation, on your phone, with your keys.
-					</p>
-					<a href="/insights/spending-bitcoin-eurozone-after-mica-wavespace-lightning" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">→</span>
-					</a>
-				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
-					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">EU Regulation</span>
-					<h3 class="text-2xl font-bold mb-3">
-						<a href="/insights/mica-july-1-deadline-self-custody-exemption-what-eu-users-need-to-know" class="hover:underline">
-							MiCA's July 1 Deadline Just Passed: What EU Bitcoin Users Actually Need to Know
-						</a>
-					</h3>
-					<p class="text-slate-600 mb-6 leading-relaxed">
-						The EU's grandfathering window for crypto exchanges expired on July 1, 2026. Here is what changed,
-						what did not, and the one thing the regulation leaves completely untouched — your right to hold your own keys.
-					</p>
-					<a href="/insights/mica-july-1-deadline-self-custody-exemption-what-eu-users-need-to-know" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">→</span>
-					</a>
-				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
-					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Bitcoin Treasury</span>
-					<h3 class="text-2xl font-bold mb-3">
-						<a href="/insights/strategys-bitcoin-sales-framework-what-it-means-for-self-custody" class="hover:underline">
-							Strategy's Bitcoin Sales Framework: What It Means for Self-Custody
-						</a>
-					</h3>
-					<p class="text-slate-600 mb-6 leading-relaxed">
-						The largest corporate holder of Bitcoin just gave itself permission to sell. Why JPMorgan flagged it
-						as a new kind of market risk — and why it makes the case for holding your own keys stronger.
-					</p>
-					<a href="/insights/strategys-bitcoin-sales-framework-what-it-means-for-self-custody" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">→</span>
-					</a>
-				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
-					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Privacy Wallet</span>
-					<h3 class="text-2xl font-bold mb-3">
-						<a href="/insights/wasabi-2-8-0-and-the-state-of-bitcoin-privacy-wallets-2026" class="hover:underline">
-							Wasabi 2.8.0 and the State of Bitcoin Privacy Wallets in 2026
-						</a>
-					</h3>
-					<p class="text-slate-600 mb-6 leading-relaxed">
-						Wasabi's biggest release in years kills its own backend, pays inside coinjoins, and edges toward full
-						network sovereignty. Here is what changed, why it matters, and where privacy wallets still fall short.
-					</p>
-					<a href="/insights/wasabi-2-8-0-and-the-state-of-bitcoin-privacy-wallets-2026" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">→</span>
-					</a>
-				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
-					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Hardware Review</span>
-					<h3 class="text-2xl font-bold mb-3">
-						<a href="/insights/why-your-next-hardware-wallet-should-have-a-keyboard" class="hover:underline">
-							Why Your Next Hardware Wallet Needs a QWERTY Keyboard — Coldcard Q Review
-						</a>
-					</h3>
-					<p class="text-slate-600 mb-6 leading-relaxed">
-						Entering passphrases on a 12-key numeric pad is more than just painful—it is an operational vulnerability.
-						Here is how Coinkite's physical powerhouse changes the self-custody equation.
-					</p>
-					<a href="/insights/why-your-next-hardware-wallet-should-have-a-keyboard" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">→</span>
+						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
 					</a>
 				</div>
 			</div>
+			<p class="mt-8 text-sm text-slate-500">
+				<a href="/insights/mica-phase-2-live-eu-bitcoin-aftermath" class="font-semibold text-slate-900 hover:underline">Browse all insights &#8594;</a>
+			</p>
 		</section>
 
 		<section class="mb-20">
-			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">Services</h2>
-			<div class="space-y-6">
-				<div class="border-l-2 border-slate-300 pl-6">
-					<h3 class="font-bold text-lg">Self-Custody Architecture</h3>
-					<p class="text-slate-600">Custom multi-signature setups, hardware security module integration, and cold storage planning.</p>
-				</div>
-				<div class="border-l-2 border-slate-300 pl-6">
-					<h3 class="font-bold text-lg">Security Auditing</h3>
-					<p class="text-slate-600">Reviewing your current infrastructure for single points of failure and operational vulnerabilities.</p>
-				</div>
-			</div>
-		</section>
-
-		<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-			<a href="https://cal.com/banitama/15min" class="block p-8 border border-slate-200 hover:bg-slate-50 transition-colors">
+			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">Contact</h2>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<a href="https://cal.com/banitama/15min" class="block p-8 border border-slate-200 hover:bg-slate-50 transition-colors">
 				<h3 class="font-bold mb-1">Book Consultation</h3>
 				<p class="text-xs uppercase text-slate-500">Secure Strategy Session</p>
 			</a>
-			<a href="https://t.me/your-handle" class="block p-8 border border-slate-200 hover:bg-slate-50 transition-colors">
+			<a href="https://t.me/banitams" class="block p-8 border border-slate-200 hover:bg-slate-50 transition-colors">
 				<h3 class="font-bold mb-1">Telegram</h3>
 				<p class="text-xs uppercase text-slate-500">Encrypted Messaging</p>
 			</a>
-			<a href="https://wa.me/your-number" class="block p-8 border border-slate-200 hover:bg-slate-50 transition-colors">
+			<a href="https://wa.me/46760784309" class="block p-8 border border-slate-200 hover:bg-slate-50 transition-colors">
 				<h3 class="font-bold mb-1">WhatsApp</h3>
 				<p class="text-xs uppercase text-slate-500">Direct Contact</p>
 			</a>
+			</div>
 		</section>
 	</main>
 </Layout>
