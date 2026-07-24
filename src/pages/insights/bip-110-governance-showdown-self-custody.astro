@@ -1,0 +1,155 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Bitcoin Governance</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        The BIP-110 Showdown: Who Gets to Decide What Bitcoin Is For?
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        On August 7, a faction of Bitcoin nodes will start rejecting blocks that miners produce. Not because the blocks are invalid. Because the blocks do not signal support for a proposal that under 1% of miners want. If you hold your own keys, this governance fight is about who controls the rules your wallet lives under.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-07-24">July 24, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        Bitcoin has a governance problem. Not the kind that gets solved by voting or constitutions. The kind that festers quietly until someone forces a deadline. August 7, 2026, is that deadline. Block 961,632 is where a minority of nodes plans to start rejecting blocks from the majority of miners, and the argument over data on the blockchain will become a live test of who actually governs Bitcoin.
+      </p>
+
+      <p>
+        I wrote <a href="/insights/bitcoin-core-31-1-bip-110-protocol-war" class="text-amber-600 hover:text-amber-700 underline">two weeks ago</a> about the technical rules in BIP-110 and how they could break certain wallet transactions. That article covered what the proposal does. This one is about what it means. Because the BIP-110 fight has stopped being about Ordinals or OP_RETURN byte limits. It is about who gets to change Bitcoin's rules, and what happens to your self-custody setup when the people running nodes disagree.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">How Bitcoin got here</h2>
+
+      <p>
+        In October 2025, Bitcoin Core released version 30. Among its changes, it quietly raised the default relay policy for OP_RETURN outputs from 83 bytes to roughly 100,000 bytes. OP_RETURN is the standard way to embed arbitrary data in a Bitcoin transaction. Core's team framed it as a relay policy update, not a consensus change. They argued that filtering OP_RETURN at the relay layer does not work because data can be embedded in other parts of a transaction regardless.
+      </p>
+
+      <p>
+        They were technically correct. They were also politically tone-deaf. The removal happened without a BIP, without community discussion, and without a vote. Anyone running a full node woke up one day to find their software was relaying transactions carrying a thousand times more data than before. The node operator's storage burden increased. The UTXO set bloated. And the people who did this called it housekeeping.
+      </p>
+
+      <p>
+        Luke Dashjr, a long-time Bitcoin developer, had been maintaining a filter patch that suppressed what he considered spam. Core had been ignoring it. When Core removed the OP_RETURN limit, Dashjr's patch became irrelevant. The response was Bitcoin Knots, an alternative node implementation that kept the filters and rejected the data-heavy transactions. Somewhere between 8% and 20% of reachable nodes migrated to Knots in the following months. Jameson Lopp argues that number is inflated by cheap Tor exit nodes. Whatever the real figure, it was enough to create a visible split in the node network.
+      </p>
+
+      <p>
+        BIP-110, formally called the "Reduced Data Temporary Softfork," was the next move. Authored by Dathon Ohm with Dashjr credited for the original draft, it proposed to cap OP_RETURN at 83 bytes, limit new output scripts to 34 bytes, restrict data pushes to 256 bytes, and disable several Taproot features temporarily. It would last one year. It would not affect existing UTXOs. The stated goal was to limit arbitrary data storage and return Bitcoin to its purpose as money.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The activation mechanism nobody asked for</h2>
+
+      <p>
+        Normal Bitcoin soft forks activate when 95% of miners signal support over a difficulty adjustment period. BIP-110 uses 55%. That alone is unusual. But the real controversy is what happens when miners do not reach even that threshold.
+      </p>
+
+      <p>
+        BIP-110 includes a mandatory signaling mechanism. At block 961,632, projected for August 7, nodes running BIP-110-enforcing software will start rejecting any block that does not signal support for the proposal. This is the UASF playbook from 2017, when user-activated soft fork advocates forced SegWit activation by threatening to reject non-signaling blocks. The difference is that SegWit had overwhelming community and economic support. BIP-110 has under 1% of miners.
+      </p>
+
+      <p>
+        As of late July 2026, BIP-110 signaling sits at roughly 0.7% of network hashrate. That is about 5 EH/s out of 940 EH/s total. Ocean Mining, associated with Jack Mallers and Adam Back, produces most of the signaling blocks. No major pool has committed. Foundry USA controls about a third of hashrate and has been silent. Antpool controls 14% and has been silent. F2Pool has refused. The 55% threshold is not going to be reached through voluntary signaling.
+      </p>
+
+      <p>
+        So the mandatory window is what matters. If Knots-enforcing nodes go through with it, they will reject blocks produced by the vast majority of miners. Bitcoin Core nodes will accept those same blocks. Two sets of valid blocks. Two versions of the chain. A chain split with no replay protection, because BIP-110 was designed to activate, not to create a new chain.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Why this is your problem if you self-custody</h2>
+
+      <p>
+        The self-custody pitch is simple. You hold your keys, you control your coins. That is true up to the consensus layer. Your keys let you sign transactions, but whether those transactions are valid depends on the rules enforced by the network. If the network splits, your keys are valid on both chains. Your transactions might be too, which sounds good until you realize it means someone can replay a transaction you made on one chain onto the other without your consent.
+      </p>
+
+      <p>
+        If you run your own node, the question is which rules your node enforces. A Bitcoin Core node will follow the majority chain. A Bitcoin Knots node running BIP-110 enforcement will reject non-signaling blocks. If you use Knots and the split happens, your node will be on the minority chain. Your coins will be there. The market will price them at whatever the minority chain is worth, which based on the BCH precedent will be a fraction of the original.
+      </p>
+
+      <p>
+        If you use a hardware wallet or a mobile wallet connected to Electrum servers or your own node, you need to know what consensus rules those servers enforce. A wallet that connects to a Knots node after the split will see a different chain state than one connected to a Core node. The same seed phrase, the same keys, the same UTXOs, but different chain histories and potentially different balances if any of your coins are in transactions affected by the new rules.
+      </p>
+
+      <p>
+        The grandfathering in BIP-110 is real. UTXOs created before activation are exempt. Your existing Bitcoin is not going to become invalid. But receiving new bitcoin, generating new addresses, and creating new transactions all happen under whatever consensus rules your node enforces. If your wallet generates a Miniscript address with OP_IF after the rules change, and you send coins to it, those coins may be locked under the new regime.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The people on each side</h2>
+
+      <p>
+        Michael Saylor published "110 Reasons Why BIP-110 Is a Bad Idea" on July 18. His argument is about precedent. Once consensus rules start distinguishing between "acceptable" and "unacceptable" legitimate transactions, that distinction becomes permanent. It creates a mechanism for future actors to decide what Bitcoin is for. His concern is not about spam. It is about who controls the rule-making process.
+      </p>
+
+      <p>
+        Adam Back says BIP-110 will self-fork or fail to activate. Jameson Lopp has raised similar concerns about the forced activation mechanism. The argument is that mandatory signaling with under 1% natural support does not produce consensus. It produces disagreement. SegWit and Taproot both cleared 90% miner support before activation. BIP-110 cannot clear 1%.
+      </p>
+
+      <p>
+        On the other side, Knots supporters point to Core v30's OP_RETURN uncap as proof that the Core development process does not represent the community either. Core made a change affecting every node operator without a BIP or a vote. BIP-110, they argue, is the community pushing back. Dathon Ohm's framing on bip110.org is that Bitcoin "should do one thing, and do it well," and that thing is money, not data storage.
+      </p>
+
+      <p>
+        BIP editor Mark Erhardt, known as Murch, assigned BIP-110 its number while calling it "a misguided and unusually careless softfork proposal." A BIP number means process compliance. It does not mean endorsement. The irony is that both sides claim to be defending Bitcoin from governance capture. Core's critics say a small group of maintainers changed relay policy without consent. BIP-110's critics say a small group of node operators are trying to force consensus rules without support.
+      </p>
+
+      <p>
+        Peter Todd embedded the full BIP-110 text inside a compliant transaction to prove that determined data storage survives the rules. The BIP's own specification concedes this. It raises the cost of data storage. It does not eliminate it. The Cat, a stricter follow-on proposal favored by some supporters, is waiting in the wings if BIP-110 expires.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The August collision</h2>
+
+      <p>
+        There is a second event in August that compounds the risk. Paul Sztorc, known for the Drivechain proposal, has announced a hard fork targeting block 964,000, around August 21. It would create a separate SHA-256d chain with a 1:1 airdrop to all BTC holders. The fork is unrelated to BIP-110. It does not impose data limits. It focuses on scaling and sidechain development.
+      </p>
+
+      <p>
+        The timing is a coincidence. The effect is not. Exchanges, custodians, wallet providers, and institutional holders now face two chain-split events within three weeks of each other. Each one forces a decision. Support BIP-110 or not. Support Sztorc's fork or not. Credit the airdrop or not. These decisions do not wait for consensus. They wait for legal teams and risk committees, and those teams move slowly.
+      </p>
+
+      <p>
+        Prediction markets are pricing in a disorderly split as unlikely. Polymarket BTC-price ladders for mid-to-late July suggest traders expect Bitcoin to remain in the low-to-high $50,000 range. The market seems to be betting that Knots nodes will blink, that the mandatory window will pass without enforcement, or that enforcement will fail because the minority chain cannot sustain itself. The BCH precedent supports this. A chain split without meaningful hashrate support has historically resulted in the minority chain trading at a fraction of the original.
+      </p>
+
+      <p>
+        But "the market eventually resolves the issue" and "the market resolves the issue without costs" are different claims. Chain splits produce replay attacks, exchange listing confusion, custody uncertainty, and a risk premium that shows up as wider spreads and thinner order books. These are temporary problems. Temporary problems can last months.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What to do before August 7</h2>
+
+      <p>
+        If you run a node, the decision is yours and it is binary. Run Bitcoin Core and follow the majority chain. Run Bitcoin Knots with BIP-110 enforcement and potentially end up on a minority chain. There is a third option: run Bitcoin Core and let your node follow whichever chain has more accumulated work, which is what Core does by default. That is the conservative choice.
+      </p>
+
+      <p>
+        If you use a hardware wallet, a mobile wallet, or a desktop wallet connected to Electrum servers, find out what consensus rules those servers enforce. Most Electrum servers run Bitcoin Core. Some run Knots. If your wallet provider has not made a statement about BIP-110 compatibility, ask them. The answer determines which chain your wallet sees after a split.
+      </p>
+
+      <p>
+        If you are receiving bitcoin between now and September, and your wallet uses Miniscript or Tapscripts with OP_IF, check whether the wallet has been updated for BIP-110 compatibility. Nunchuk is one wallet that has been flagged as potentially affected. The <a href="/insights/why-your-next-hardware-wallet-should-have-a-keyboard" class="text-amber-600 hover:text-amber-700 underline">hardware wallet you use</a> does not change the consensus rules. But the software wallet interface connected to it does.
+      </p>
+
+      <p>
+        Do not move your bitcoin to new addresses out of fear. Existing UTXOs are permanently exempt. The rules apply to new outputs created after activation. If BIP-110 fails to activate, which is the most likely outcome given current support levels, none of this matters. If it does activate, the risk is in receiving, not holding.
+      </p>
+
+      <p>
+        The people telling you Bitcoin's governance is broken are correct. The people telling you BIP-110 will fix it are not. The people telling you to ignore it are betting that the market will sort it out. The market probably will. But the market sorting things out means your coins might be on two chains for a while, and someone might try to spend them on the one you are not watching.
+      </p>
+
+      <p>
+        August 7 is not the end of Bitcoin. But it is the moment where the argument stops being theoretical.
+      </p>
+    </section>
+  </article>
+</Layout>
