@@ -69,6 +69,54 @@ import Layout from '../layouts/Layout.astro';
 			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">Latest Insights</h2>
 			<div class="space-y-6">
 				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
+					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Security Advisory</span>
+					<h3 class="text-2xl font-bold mb-3">
+						<a href="/insights/coldcard-mk3-seed-vulnerability-seedsigner-bitkey-alternatives" class="hover:underline">
+							Coldcard Mk3 Seed Vulnerability: 594 BTC Gone, and Closed RNG Is Why
+						</a>
+					</h3>
+					<p class="text-slate-600 mb-6 leading-relaxed">
+						A random number generator defect in the Coldcard Mk3 swept 594 BTC from 500 wallets
+						overnight. SeedSigner offers verifiable seed entropy. Bitkey removes the seed phrase
+						entirely. Here is what Mk3 owners should do now.
+					</p>
+					<a href="/insights/coldcard-mk3-seed-vulnerability-seedsigner-bitkey-alternatives" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
+						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
+					</a>
+				</div>
+				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
+					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">EU Regulation</span>
+					<h3 class="text-2xl font-bold mb-3">
+						<a href="/insights/mica-enforcement-begins-eu-crypto-blacklist" class="hover:underline">
+							MiCA Enforcement Has Begun: Is Your Exchange on the EU Blacklist?
+						</a>
+					</h3>
+					<p class="text-slate-600 mb-6 leading-relaxed">
+						The deadline came and went. Now the enforcement starts. ESMA has named 164 crypto
+						firms operating illegally in Europe. Binance is gone. MEXC is flagged. If your
+						exchange is on that list, your money has zero legal protection.
+					</p>
+					<a href="/insights/mica-enforcement-begins-eu-crypto-blacklist" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
+						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
+					</a>
+				</div>
+				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
+					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Bitcoin Protocol</span>
+					<h3 class="text-2xl font-bold mb-3">
+						<a href="/insights/bip-110-august-deadline-self-custody" class="hover:underline">
+							The BIP-110 Deadline Is Here: What Self-Custody Holders Should Do Now
+						</a>
+					</h3>
+					<p class="text-slate-600 mb-6 leading-relaxed">
+						Block 961,632 is roughly two weeks away. Miners are signaling at under 1 percent.
+						Lyn Alden says a chain split is possible. If you hold your own keys, here is what
+						to check, what to avoid, and what to do before August 7.
+					</p>
+					<a href="/insights/bip-110-august-deadline-self-custody" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
+						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
+					</a>
+				</div>
+				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
 					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Bitcoin Governance</span>
 					<h3 class="text-2xl font-bold mb-3">
 						<a href="/insights/bip-110-governance-showdown-self-custody" class="hover:underline">
@@ -117,42 +165,10 @@ import Layout from '../layouts/Layout.astro';
 						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
 					</a>
 				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
-					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">EU Regulation</span>
-					<h3 class="text-2xl font-bold mb-3">
-						<a href="/insights/mica-phase-2-live-eu-bitcoin-aftermath" class="hover:underline">
-							MiCA Phase 2 Is Live: Europe Just Lost 92% of Its Crypto Firms
-						</a>
-					</h3>
-					<p class="text-slate-600 mb-6 leading-relaxed">
-						The EU's MiCA transitional period expired on July 1, 2026. Over 2,500 crypto firms are gone.
-						Binance exited several countries. USDT got delisted. Here is what the new European crypto
-						landscape looks like and what it means for your bitcoin.
-					</p>
-					<a href="/insights/mica-phase-2-live-eu-bitcoin-aftermath" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
-					</a>
 				</div>
-				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
-					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Bitcoin Protocol</span>
-					<h3 class="text-2xl font-bold mb-3">
-						<a href="/insights/bitcoin-core-31-1-bip-110-protocol-war" class="hover:underline">
-							Bitcoin Core 31.1 and BIP-110: Why the Protocol War Is Your Problem
-						</a>
-					</h3>
-					<p class="text-slate-600 mb-6 leading-relaxed">
-						Bitcoin Core 31.1 fixes a privacy bug that could leak your IP address. BIP-110, a separate
-						proposal heading toward forced activation in August, could invalidate wallet transactions
-						built on Miniscript and certain Taproot scripts. Both affect your self-custody setup.
+					<p class="mt-8 text-sm text-slate-500">
+						<a href="/insights/mica-phase-2-live-eu-bitcoin-aftermath" class="font-semibold text-slate-900 hover:underline">Browse all insights &#8594;</a>
 					</p>
-					<a href="/insights/bitcoin-core-31-1-bip-110-protocol-war" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
-						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
-					</a>
-				</div>
-			</div>
-			<p class="mt-8 text-sm text-slate-500">
-				<a href="/insights/mica-phase-2-live-eu-bitcoin-aftermath" class="font-semibold text-slate-900 hover:underline">Browse all insights &#8594;</a>
-			</p>
 		</section>
 
 		<section class="mb-20">
