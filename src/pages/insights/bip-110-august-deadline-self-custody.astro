@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Bitcoin Protocol</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        The BIP-110 Deadline Is Here: What Self-Custody Holders Should Do Now
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        Block 961,632 is roughly two weeks away. Miners are signaling at under 1 percent. Exchanges are preparing operational policies. Lyn Alden says a chain split is possible. If you hold your own keys, this is what matters before August 7.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-07-27">July 27, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        I have <a href="/insights/bitcoin-core-31-1-bip-110-protocol-war" class="text-amber-600 hover:text-amber-700 underline">written about BIP-110 twice now</a>. The first time I explained what it does. The second time I <a href="/insights/bip-110-governance-showdown-self-custody" class="text-amber-600 hover:text-amber-700 underline">argued the governance fight was effectively over</a>. Now the deadline is staring us in the face and the question has shifted from theory to operations. Block 961,632 hits around August 7. That is when nodes running BIP-110 enforcement software start rejecting any block that does not signal support for a proposal less than one percent of miners want.
+      </p>
+
+      <p>
+        The current block height is around 959,680. That puts roughly 2,000 blocks between today and the mandatory signaling window. At Bitcoin's average block time of ten minutes, that is about two weeks. The window runs from block 961,632 through block 963,647. Lock-in happens no later than block 963,648. Activation follows at block 965,664, projected for September 1. The rules then last for 52,416 blocks, about one year, and expire on their own.
+      </p>
+
+      <p>
+        None of this has changed since I last wrote about it. What has changed is that the timeline is no longer abstract. Lyn Alden, one of the most respected analysts in Bitcoin, went on Stephan Livera's podcast on July 22 and said BIP-110 is unlikely to curb spam and raises the risk of a chain split. She called the proposal's logic a "motte-and-bailey" argument. Supporters retreat to the simple claim that Bitcoin should not store arbitrary data when challenged, then advance the much broader claim that certain transaction types should be banned at the consensus level. Her assessment matters because she is not a polemicist. She is someone who reads the code and thinks carefully before speaking.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What happens at block 961,632</h2>
+
+      <p>
+        Nodes running Bitcoin Knots or other BIP-110-compatible software will begin rejecting any block that does not signal bit 4. Since roughly 99 percent of miners are not signaling, this means enforcing nodes will reject almost every block the network produces. The non-enforcing majority, running Bitcoin Core, will accept those same blocks. You end up with two sets of nodes disagreeing about which blocks are valid on the same network.
+      </p>
+
+      <p>
+        If the enforcing nodes represent a tiny minority of hashpower, their chain will be slow and short. It will likely die on its own within hours or days. The risk is not that BIP-110 takes over Bitcoin. The risk is the period of uncertainty in between. Jon Atack, a Bitcoin Core developer, advises users to pause large transfers around block 961,632 because short chain reorganizations are possible. Luke Dashjr counter-argues that upgraded nodes face no reorg risk once BIP-110 locks in. Both can be right. The first is talking about the transition period. The second is talking about the steady state after lock-in. You care about the transition.
+      </p>
+
+      <p>
+        BIP-110 includes no replay protection because it was not designed to produce a chain split. If a split happens anyway, a transaction broadcast on one chain could be valid on both. You send bitcoin to an exchange on the minority chain, and the same transaction gets confirmed on the majority chain where your exchange is not watching. Your deposit vanishes into a chain your exchange does not recognize. This is the scenario exchanges and custodians are scrambling to prepare for right now.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The wallet problem has not been fixed</h2>
+
+      <p>
+        Farside Investors flagged the issue in late June. BIP-110 bans OP_IF and OP_NOTIF in Tapscripts. Miniscript, a framework some modern wallets use to compose complex spending conditions, relies on OP_IF. After activation, wallets that support Miniscript could still generate addresses built on the now-banned scripts. You send bitcoin to one of those addresses. The transaction looks valid. The spending conditions required to move those coins are no longer valid under the new consensus rules. Your bitcoin becomes unspendable.
+      </p>
+
+      <p>
+        Bitcoin Knots, the implementation enforcing BIP-110, could itself create these incompatible addresses. That is the software telling you your coins are safe while it generates addresses that will lock them. The BIP specification acknowledges "very unlikely" scenarios where funds could theoretically be frozen or lost. "Very unlikely" is doing a lot of work in that sentence. If you are the person whose wallet generated one of those addresses, "unlikely" is cold comfort.
+      </p>
+
+      <p>
+        The proposal also bans new pay-to-public-key, or P2PK, outputs. P2PK was used extensively in Bitcoin's early days and currently backs more than 1.7 million BTC. Spending existing P2PK outputs would still work because of grandfathering. Creating new ones would not. If your wallet generates P2PK outputs for any reason, stop using it for new transactions until you have confirmed compatibility.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Grandfathering protects old coins, not new addresses</h2>
+
+      <p>
+        Grandfathering means UTXOs created before activation are exempt from all new rules. Your existing Bitcoin and existing inscriptions remain untouched. The rules apply only to new outputs created at or after the activation height. This is the right design choice. But it does not solve the wallet compatibility problem. The danger is not in spending old coins. It is in receiving new ones at addresses your wallet generated without knowing they would become invalid. A wallet that was safe on August 6 could generate a lock-up address on August 8 that you cannot spend from.
+      </p>
+
+      <p>
+        Wallet developers have until the mandatory lock-in window plus a two-week grace period to update their software. Some will. Some will not. Some do not even know their wallet depends on OP_IF. If you use a Miniscript-based wallet or a wallet with complex Tapscript spending conditions, you need to check this yourself. The <a href="https://bip110.org/" class="text-amber-600 hover:text-amber-700 underline">BIP-110 site</a> and the <a href="https://github.com/bitcoin/bips/blob/master/bip-0110.mediawiki" class="text-amber-600 hover:text-amber-700 underline">full specification on GitHub</a> list the affected scripts. Match them against what your wallet uses.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The eCash fork is a separate event</h2>
+
+      <p>
+        Paul Sztorc's eCash hard fork targets block 964,000, around August 21. It would create a separate chain with a 1:1 airdrop for Bitcoin holders. The two events are unrelated. BIP-110 is a temporary soft fork that tightens rules on the existing chain. eCash is a hard fork that creates a new one. But the timing overlap means August has two protocol events landing in the same three-week window, and the operational noise from one bleeds into the other. Do not confuse them. If someone tells you to move your coins for the eCash airdrop, that has nothing to do with BIP-110.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What you should actually do</h2>
+
+      <p>
+        If you hold your own keys, the practical risks are narrow but real. First, identify whether your wallet uses Miniscript or scripts that depend on OP_IF in Tapscripts. If it does, stop generating new receive addresses until you have confirmed the wallet has been updated for BIP-110 compatibility. If your wallet developer has not issued a statement, ask them.
+      </p>
+
+      <p>
+        Second, avoid receiving large transactions during the mandatory signaling window if you can. The window opens around August 7 and runs through late August. If you are expecting a significant inbound transfer, try to receive it before August 7 or delay it until after activation at block 965,664 in early September. This is not paranoia. Jon Atack, a Bitcoin Core developer, explicitly advises pausing transfers around block 961,632 because short reorgs are possible.
+      </p>
+
+      <p>
+        Third, if you run a node, keep it on Bitcoin Core 31.1. Do not switch to Bitcoin Knots unless you understand exactly what enforcement means for your transactions. If your node starts enforcing BIP-110 rules, it will reject blocks from the majority chain. Your node will fall out of sync with the network. Your wallet will show confirmations that the rest of the network does not see. You will effectively be on a different chain from everyone else, including the exchanges you might want to send to.
+      </p>
+
+      <p>
+        Fourth, if you have coins on an exchange, check whether the exchange has published a policy for the August window. Major exchanges and custodians are the operational front line here. They need to decide whether to suspend deposits and withdrawals during the mandatory signaling period, how to handle chain-split scenarios, and whether to require additional confirmations. Some will be ready. Some will not. If your exchange has not communicated a plan, ask them.
+      </p>
+
+      <p>
+        Fifth, do not panic. The most likely outcome is that the enforcing nodes find themselves on a minority chain with no exchange support and no economic value. The rules expire after one year regardless. Your existing coins are grandfathered. The real risk is narrow but specific. It affects new outputs created by wallets that depend on banned scripts. If you know your wallet is clean, you have very little to worry about.
+      </p>
+
+      <p>
+        Michael Saylor published "110 Reasons BIP-110 Is a Bad Idea" on July 18. Adam Back told supporters to fork off. David Bailey called it a hostile takeover attempt powered by AI-generated content. Lyn Alden warned it will not stop spam and could split the chain. Mark "Murch" Erhardt, the BIP editor who assigned the number, called it "a misguided and unusually careless softfork proposal." The opposition is overwhelming. The proposal is dying. But dying proposals can still cause real damage during the window between their failure and their formal expiration.
+      </p>
+
+      <p>
+        The <a href="https://bip110.org/monitor" class="text-amber-600 hover:text-amber-700 underline">BIP-110 signaling monitor</a> tracks live data. Miner signaling as of late July sits at about 5 EH/s out of 940 EH/s total network hashrate, or roughly half a percent. Ocean Mining produces most of the signaling blocks. No major pool has committed. Foundry USA, Antpool, F2Pool. None of them moved. F2Pool has refused outright. The mandatory window is what happens when voluntary signaling fails. It is the mechanism designed to override miners who do not want the change.
+      </p>
+
+      <p>
+        I do not think BIP-110 will successfully activate in any meaningful way. The economic majority is not behind it. The technical objections are serious. The self-custody risk is real and unaddressed. But the deadline is real too, and the two weeks between now and block 961,632 are when the practical decisions get made. Check your wallet. Pause large transfers. Keep your node on Core. The people who pushed this proposal wanted to clean up Bitcoin's block space. They may end up cleaning out a few wallets instead.
+      </p>
+    </section>
+  </article>
+</Layout>
