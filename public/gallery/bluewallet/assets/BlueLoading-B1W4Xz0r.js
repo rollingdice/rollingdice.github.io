@@ -1,0 +1,1 @@
+import{z as c,j as t,V as a,a8 as i,s as l}from"./index-myvJCwQM.js";const j=e=>{const{color:s,size:o,...r}=e,{colors:n}=c();return t.jsx(a,{style:x.container,...r,children:t.jsx(i,{size:o,color:s||n.buttonTextColor})})},x=l.create({container:{flex:1,justifyContent:"center"}});export{j as B};

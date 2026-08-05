@@ -61,9 +61,44 @@
     };
     var iv = setInterval(function () {
       if (window.__bootdone) { clearInterval(iv); return; }
-      window.__bootmark('dom@' + window.__bwdom());
+      if (window.__bwgeom) {
+        window.__bootmark(window.__bwgeom());
+      } else {
+        window.__bootmark('dom@' + window.__bwdom());
+      }
     }, 4000);
     setTimeout(function () { window.__bootdone = true; }, 40000);
+
+    // Geometry dump (run once after ~5s): is the screen content in the viewport,
+    // zero-height, off-screen, or covered? This distinguishes CSS/paint cause.
+    window.__bwgeom = function () {
+      try {
+        var root = document.getElementById('root');
+        var winH = window.innerHeight, winW = window.innerWidth;
+        var rr = root ? root.getBoundingClientRect() : null;
+        var htmlH = (document.documentElement && document.documentElement.scrollHeight) || 0;
+        // find the element that contains 'Add a wallet' (the home content)
+        var host = null;
+        if (root) {
+          var all = root.querySelectorAll('*');
+          for (var i = 0; i < all.length; i++) {
+            if (all[i].children.length === 0 && all[i].textContent && all[i].textContent.indexOf('Add a wallet') !== -1) {
+              host = all[i]; break;
+            }
+          }
+        }
+        var hr = host ? host.getBoundingClientRect() : null;
+        var style = host ? (window.getComputedStyle(host).position) : 'n/a';
+        var rtext = rr ? ('root t=' + Math.round(rr.top) + ' l=' + Math.round(rr.left) + ' w=' + Math.round(rr.width) + ' h=' + Math.round(rr.height)) : 'root null';
+        var htext = hr ? ('host t=' + Math.round(hr.top) + ' h=' + Math.round(hr.height) + ' vis=' + (hr.top < winH && hr.bottom > 0)) : 'host null';
+        return ('GEO ' + rtext + ' | ' + htext + ' | win=' + winW + 'x' + winH + ' docH=' + htmlH + ' pos=' + style);
+      } catch (e) {
+        return 'geom-err ' + e;
+      }
+    };
+    setTimeout(function () {
+      try { if (window.__bootmark) window.__bootmark(window.__bwgeom()); } catch (e) {}
+    }, 6000);
   } catch (e) {}
   window.addEventListener('error', function (e) {
     var m = (e && e.message) || 'unknown error';
@@ -88,7 +123,7 @@
       html, body, #root { margin: 0; padding: 0; height: 100%; }
       body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #0c2556; }
     </style>
-    <script type="module" crossorigin src="./assets/index-BhY3kRUs.js"></script>
+    <script type="module" crossorigin src="./assets/index-myvJCwQM.js"></script>
   </head>
   <body>
     <div id="root"></div>
