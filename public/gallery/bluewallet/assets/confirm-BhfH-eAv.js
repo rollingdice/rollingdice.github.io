@@ -1,0 +1,1 @@
+import{aN as a,G as t}from"./index-BLuQ-WFn.js";function c(r="Are you sure?",s=""){return new Promise(e=>{a.alert(r,s,[{text:t._.yes,onPress:()=>e(!0),style:"default"},{text:t._.cancel,onPress:()=>e(!1),style:"cancel"}],{cancelable:!1})})}export{c};
