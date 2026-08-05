@@ -1,0 +1,1 @@
+import{aN as n}from"./index-BuKzGPiN.js";class i{static showActionSheetWithOptions(e,c){const l=e.options.map((s,t)=>{let a="default";return t===e.destructiveButtonIndex?a="destructive":t===e.cancelButtonIndex&&(a="cancel"),{text:s,onPress:()=>c(t),style:a}});n.alert(e.title||"",e.message||"",l,{cancelable:!!e.cancelButtonIndex})}}export{i as A};
