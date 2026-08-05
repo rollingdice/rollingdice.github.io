@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>JS Probe</title>
+<meta http-equiv="Cache-Control" content="no-store" />
+<style>
+  html,body{margin:0;height:100%}
+  body{background:#fff;font:16px monospace;padding:20px}
+</style>
+</head>
+<body>
+<p>JS PROBE — this page contains a single inline script. If it runs, the line below will say <b>JS OK</b>.</p>
+<p id="out">waiting for JS… (if you only see this and no 'JS OK' below, JavaScript did NOT execute)</p>
+<script>
+  // The ONLY thing this page does: prove inline JS runs on this origin.
+  var el = document.getElementById('out');
+  el.textContent = 'JS OK · ' + navigator.userAgent.slice(0, 40);
+  document.body.style.background = '#e6ffe6';
+</script>
+</body>
+</html>
