@@ -1,0 +1,111 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const wallets = [
+  {
+    name: "Bull Bitcoin",
+    tag: "Live demo",
+    stack: "BDK (Rust) → WASM",
+    status: "ready",
+    desc: "Native Bitcoin wallet built on BDK. Our harness compiles Bull's own open-source core to WASM and runs it in your browser — try it before you install.",
+    href: "/gallery/bull-bitcoin/",
+    cta: "Try on signet",
+  },
+  {
+    name: "Liana",
+    tag: "Scoped",
+    stack: "Rust (revault/Liana)",
+    status: "next",
+    desc: "Timelock-based inheritance wallet, Rust core. Pairs naturally with the same BDK-wasm path Bull uses — the entropy model is identical.",
+    href: null,
+    cta: "Planned",
+  },
+  {
+    name: "Nunchuk",
+    tag: "Scoped",
+    stack: "Rust (Core), native mobile",
+    status: "next",
+    desc: "Multisig-first mobile wallet. Its core key-derivation model can be shown honestly in-browser even though the full app is native.",
+    href: null,
+    cta: "Planned",
+  },
+  {
+    name: "BlueWallet",
+    tag: "Entropy model",
+    stack: "React Native (JS)",
+    status: "model",
+    desc: "Feature-rich mobile wallet. Uses OS CSPRNG with optional dice-roll seed entropy for the seed phrase generation step.",
+    href: null,
+    cta: "Honesty note",
+  },
+  {
+    name: "Aqua / Green",
+    tag: "Entropy model",
+    stack: "GDK (C++), Blockstream",
+    status: "model",
+    desc: "Liquid + Bitcoin wallets on Blockstream's GDK. Native C++ core can't recompile to web; we show the entropy flow honestly instead.",
+    href: null,
+    cta: "Honesty note",
+  },
+];
+---
+
+<Layout>
+	<main class="max-w-4xl mx-auto px-6 py-20">
+		<header class="mb-16">
+			<a href="/" class="text-sm text-slate-500 hover:text-slate-700">← banitama.my.id</a>
+			<h1 class="text-5xl font-bold tracking-tight mb-6 mt-8">Wallet Entropy Gallery</h1>
+			<p class="text-2xl text-slate-600 leading-relaxed max-w-2xl">
+				Try open-source mobile wallets <em>before</em> you download them — with worthless
+				signet test coins, in the safety of your browser.
+			</p>
+		</header>
+
+		<section class="mb-16">
+			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-6">Why this exists</h2>
+			<p class="text-slate-700 leading-relaxed max-w-2xl mb-4">
+				All Bitcoin is entropy. Every wallet below starts from a random seed — and how that
+				seed is generated is the difference between custody and catastrophe (see the
+				<a href="/insights/coldcard-mk3-seed-vulnerability-seedsigner-bitkey-alternatives" class="text-amber-500 hover:underline font-medium">Coldcard Mk3 failing</a>,
+				where a closed RNG swept 594 BTC). These wallets are profiled on
+				<a href="https://plebprojects.com/wallet-entropy/#s5-2" target="_blank" rel="noopener" class="text-amber-500 hover:underline font-medium">PlebRoyale's entropy report</a>.
+			</p>
+			<p class="text-slate-600 leading-relaxed max-w-2xl">
+				We reproduce each wallet's <strong class="text-slate-800">open-source core</strong> — not a mock,
+				not a screenshots app. The engines actually run in your browser (compiled to WebAssembly) on a
+				private signet <em>test</em> network. Coins are worthless. Nothing leaves your device.
+			</p>
+		</section>
+
+		<section>
+			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">The Wallets</h2>
+			<div class="grid md:grid-cols-2 gap-6">
+				{wallets.map((w) => (
+					<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors flex flex-col">
+						<div class="flex items-center justify-between mb-3">
+							<h3 class="text-2xl font-bold">{w.name}</h3>
+							<span class={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded ${w.status === "ready" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-500"}`}>{w.tag}</span>
+						</div>
+						<p class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-4">{w.stack}</p>
+						<p class="text-slate-600 leading-relaxed mb-6 flex-1">{w.desc}</p>
+						{w.href ? (
+							<a href={w.href} class="inline-flex items-center justify-center px-5 py-3 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 transition-colors">
+								{w.cta} →
+							</a>
+						) : (
+							<div class="inline-flex items-center justify-center px-5 py-3 border border-slate-300 text-slate-500 font-semibold rounded-xl">
+								{w.cta}
+							</div>
+						)}
+					</div>
+				))}
+			</div>
+		</section>
+
+		<footer class="mt-16 text-xs text-slate-400 max-w-2xl leading-relaxed">
+			Testnet disclaimer: this gallery runs on <strong>Bitcoin signet</strong>, a sandbox network. Every
+			address, seed and transaction is a test. Never use signet coins for anything real. Download the real
+			app for real bitcoin. I am not a financial advisor — custody education only.
+		</footer>
+	</main>
+</Layout>

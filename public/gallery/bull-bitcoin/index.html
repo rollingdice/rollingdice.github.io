@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Try On Signet — Bull Bitcoin (BDK)</title>
+  <script type="module" crossorigin src="./assets/index-Cjl0Unmp.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CeUnxprP.css">
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>Bull Bitcoin — try on signet</h1>
+      <p class="sub">In-browser demo on the same open-source core (BDK) Bull Bitcoin uses, on a private <strong>signet</strong> (test network).</p>
+      <p class="disclosure">⚠️ Coins here are <strong>worthless test coins</strong>. Download the real app for real bitcoin.</p>
+    </header>
+
+    <section class="card" id="wallet">
+      <h2>1 · Your wallet</h2>
+      <div class="row">
+        <button id="btn-generate" class="primary">Generate wallet</button>
+        <span id="wasm-status"></span>
+      </div>
+      <details>
+        <summary>Or enter an existing 12-word seed phrase</summary>
+        <textarea id="seed-input" rows="2" placeholder="word word word ..."></textarea>
+        <button id="btn-use-seed">Use this seed</button>
+      </details>
+
+      <div id="wallet-info" hidden>
+        <div class="field"><label>Seed phrase</label><code id="seed"></code></div>
+        <div class="field"><label>Descriptor</label><code id="descriptor"></code></div>
+        <div class="field"><label>Signet address</label><code id="address"></code></div>
+      </div>
+    </section>
+
+    <section class="card" id="coins">
+      <h2>2 · Get test coins</h2>
+      <p>Request from the signet faucet at:</p>
+      <code id="faucet-addr"></code>
+      <p class="hint">The public faucet is captcha-gated; once funded, refresh to see the balance.</p>
+      <button id="btn-refresh">Refresh balance</button>
+    </section>
+
+    <section class="card" id="balance-card">
+      <h2>3 · Balance</h2>
+      <div id="balance">— tBTC</div>
+      <div id="txlist"></div>
+    </section>
+
+    <section class="card" id="send-card" hidden>
+      <h2>4 · Send (signet)</h2>
+      <div class="row">
+        <input id="send-addr" placeholder="signet address (tb1...)" />
+        <input id="send-amount" type="number" step="0.00000001" placeholder="amount in tBTC" />
+        <button id="btn-send">Send</button>
+      </div>
+      <div id="send-result"></div>
+    </section>
+  </main>
+</body>
+</html>
