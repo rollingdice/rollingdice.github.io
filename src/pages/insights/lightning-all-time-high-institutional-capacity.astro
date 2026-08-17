@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Lightning Network</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        Lightning's All-Time High Hides a Centralization Problem
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        Capacity hit a record 5,637 BTC last December as Binance and OKX piled liquidity into payment channels. Yet node count keeps falling. The institutions are building a network for themselves, and stablecoins are the cargo. That is not the self-custody story it is sold as.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-08-17">August 17, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        Remember the December headline. Lightning capacity had just hit a record 5,637 bitcoin, its highest number ever, breaking the old peak from March 2023. Binance and OKX were shoveling liquidity into payment channels. Tether had just dropped eight million dollars into a Lightning startup called Speed. Every outlet ran it as a victory lap for Bitcoin adoption.
+      </p>
+
+      <p>
+        It is a victory for somebody. I am going to argue it is not a victory for the people who hold their own keys, and that gap between the two versions of the story is the part worth your attention.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What the record number actually is</h2>
+
+      <p>
+        Lightning is the second layer that lets two parties open a payment channel once, then send each other instant payments off-chain for near-zero fees. Capacity is the total amount of bitcoin locked in all those public channels. More capacity means more money the network can move. Late last year that figure climbed to 5,637 BTC, according to Amboss, after falling for most of the year. It has settled since to around 4,900 BTC, but the December peak still stands as the all-time high.
+      </p>
+
+      <p>
+        What pushed it over the top was not a wave of new users. It was a handful of large companies. Binance and OKX deposited significant bitcoin into Lightning channels in the weeks before the peak. Coinbase had already wired in its Lightning integration in 2024, and by mid-2025 more than 15 percent of bitcoin withdrawals from Coinbase were leaving over Lightning. The surge was concentrated in November and December, right when the exchanges were moving money.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The number that is not moving</h2>
+
+      <p>
+        Here is the tell. Capacity is at a record, but node count is not. The network has roughly 15,000 nodes today, according to Bitcoin Visuals, down from a peak of about 20,700 in early 2022. Channels are below their historical highs too. A network is becoming more capitalized at the same time it is becoming less distributed. Fewer operators, holding more money, in bigger channels.
+      </p>
+
+      <p>
+        That is the opposite of the grassroots picture the number gets sold with. When capacity rises across thousands of hobbyist nodes, that is a broad base. When it rises because three exchanges each opened a handful of very large channels, that is a different thing. The same number tells two stories, and the one with the exchanges in it is the one the data supports.
+      </p>
+
+      <p>
+        Amboss said it plainly. It is not one company pushing a little more bitcoin into Lightning. It is across the board, from the big exchanges. Meanwhile the small operators and individual users, the parts I care about for self-custody, are not growing anywhere near as fast.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Stablecoins change what Lightning is for</h2>
+
+      <p>
+        The quieter part of December was Tether. It led an eight million dollar investment in Speed, a startup that moves stablecoins over Lightning, and announced USDT support on Bitcoin. That went live in March 2026. Lightning Labs shipped version 0.7 of Taproot Assets, which lets dollar-pegged tokens travel on the same rails that move bitcoin. The stated ambition is for trillions of dollars to flow over Bitcoin and Lightning.
+      </p>
+
+      <p>
+        A USDT stablecoin on Lightning is a dollar that settles in under a second at almost no cost. That is genuinely useful, and it is genuinely attractive to banks, payment processors, and remittance companies. It is the institutional use case done well. But it is a dollar, issued by a company, on a network that was built to move bitcoin between people who hold their own keys. The railroad is being relaid for cargo the builders of the rails never designed it for.
+      </p>
+
+      <p>
+        This is not doom. It is a description of where the capital is going. The institutions are building Lightning as settlement infrastructure for themselves and for stablecoins. That is a real business and it is being funded. The part of Lightning I write about, the self-custodial part where you run your own node or use a non-custodial mobile wallet, is a thinner and less funded slice of the same plumbing.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What this means if you self-custody</h2>
+
+      <p>
+        Nothing about the institutions funding Lightning stops you from using it. A non-custodial wallet like <a href="/insights/spending-bitcoin-eurozone-after-mica-wavespace-lightning" class="text-amber-600 font-semibold hover:underline">Wavespace or Breez on your phone</a> still puts your keys on your device, and the more liquidity there is in the network, the easier it is to route a payment through it. Institutional inflow is good for anyone who wants to spend bitcoin quickly.
+      </p>
+
+      <p>
+        The uncomfortable part is the direction of the trend. Capacity is centralizing while nodes shrink. The exchanges that put the money in run custodial Lightning, which means your balance is an IOU, the same tradeoff as a bank, just faster. Stablecoins on Lightning make that custodial lane more attractive and better funded. The self-custody lane, the one where the keys never leave your device, is not what the institutions are spending on.
+      </p>
+
+      <p>
+        The lesson I keep coming back to is the one that applies to most of Bitcoin's infrastructure in 2026. The rails are being built, and that is good. But they are being built by and for the people who hold other people's bitcoin, not the people who hold their own. You can use them without joining them, as long as you keep your own node, your own wallet, your own keys. The institutions will fund whatever makes their settlement faster. The self-custody network will still run on people willing to run a node for no paycheck.
+      </p>
+
+      <p>
+        In the end, a record Lightning number is only as good as who you are on the network. If you are channel liquidity for an exchange, it is an all-time high. If you are betting that capacity means you can finally spend bitcoin without a middleman, it is a reminder that somebody else just spent a lot of money to become the middleman.
+      </p>
+
+      <div class="mt-12 p-8 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col md:flex-row gap-6 items-center justify-between">
+        <div>
+          <h4 class="font-bold text-slate-900 mb-1">Check Your Lightning Setup</h4>
+          <p class="text-sm text-slate-600">Get a structured review of your self-custody spending stack, including whether your Lightning wallet is actually non-custodial and how much trust you are putting in a service provider.</p>
+        </div>
+        <a href="https://cal.com/banitama/15min" class="px-6 py-3 bg-slate-900 text-white font-semibold text-sm rounded-lg hover:bg-slate-800 transition-colors uppercase tracking-wider text-center shrink-0">
+          Book a Review
+        </a>
+      </div>
+
+      <p class="mt-8 text-xs text-slate-400 leading-relaxed">
+        Sources: <a href="https://bitcoinmagazine.com/markets/bitcoins-lightning-network-capacity-hits-new-all-time-high" class="text-slate-500 underline hover:text-slate-700">Bitcoin Magazine, "Bitcoin's Lightning Network Capacity Hits New-All Time High"</a> (Dec 2025); <a href="https://www.spark.money/research/lightning-network-2026-state" class="text-slate-500 underline hover:text-slate-700">Spark, "State of the Lightning Network in 2026"</a> (mempool.space figures); <a href="https://amboss.space/stats" class="text-slate-500 underline hover:text-slate-700">Amboss stats</a>; <a href="https://bitcoinvisuals.com/ln-capacity" class="text-slate-500 underline hover:text-slate-700">Bitcoin Visuals</a>; <a href="https://lightning.engineering/posts/2025-12-16-tapd-0.7-launch/" class="text-slate-500 underline hover:text-slate-700">Lightning Labs, Taproot Assets v0.7</a>. Related reading: <a href="/insights/spending-bitcoin-eurozone-after-mica-wavespace-lightning" class="text-slate-500 underline hover:text-slate-700">Spending Bitcoin in the Eurozone After MiCA: Wavespace and the Lightning Gap</a>. This article is for education only and is not trading or legal advice.
+      </p>
+    </section>
+  </article>
+</Layout>
