@@ -111,7 +111,12 @@ export class DiceRenderer2D {
       ctx.fillStyle = '#ffffff';
       ctx.strokeStyle = '#cbd5e1';
       ctx.beginPath();
-      ctx.roundRect(-size / 2, -size / 2, size, size, size * 0.15);
+      if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(-size / 2, -size / 2, size, size, size * 0.15);
+      } else {
+        // Older mobile Safari/WebView lack roundRect; square pips-free edges still read as dice.
+        ctx.rect(-size / 2, -size / 2, size, size);
+      }
       ctx.fill();
       ctx.stroke();
       // Pips per face (standard d6 layout).

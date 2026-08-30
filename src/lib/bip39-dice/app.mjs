@@ -23,7 +23,6 @@ export function initBip39Dice(root) {
     seedWords: root.querySelector('[data-seed-words]'),
     entropyHex: root.querySelector('[data-entropy-hex]'),
     rollString: root.querySelector('[data-roll-string]'),
-    spinner: root.querySelector('[data-spinner]'),
   };
 
   let wordCount = 12;
@@ -40,7 +39,6 @@ export function initBip39Dice(root) {
 
   function onSettled() {
     if (busy) {
-      els.spinner.classList.add('hidden');
       els.seedPanel.classList.remove('opacity-40', 'pointer-events-none');
       els.rollBtn.disabled = false;
       busy = false;
@@ -87,7 +85,6 @@ export function initBip39Dice(root) {
   async function roll() {
     if (busy) return;
     busy = true;
-    els.spinner.classList.remove('hidden');
     els.seedPanel.classList.add('opacity-40', 'pointer-events-none');
     els.rollBtn.disabled = true;
 
@@ -115,6 +112,12 @@ export function initBip39Dice(root) {
     }
   }
 
+  function showMotionBanner(reason) {
+    const reasonEl = els.bannerMotion.querySelector('[data-banner-motion-reason]');
+    if (reasonEl) reasonEl.textContent = reason;
+    els.bannerMotion.classList.remove('hidden');
+  }
+
   async function requestMotionPermission() {
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
       try {
@@ -122,15 +125,20 @@ export function initBip39Dice(root) {
         if (res === 'granted') {
           window.addEventListener('devicemotion', onMotion);
         } else {
-          els.bannerMotion.classList.remove('hidden');
+          showMotionBanner('permission was denied');
         }
       } catch {
-        els.bannerMotion.classList.remove('hidden');
+        showMotionBanner('permission could not be requested');
       }
     } else if ('DeviceMotionEvent' in window) {
       window.addEventListener('devicemotion', onMotion);
+    } else if (window.isSecureContext === false) {
+      // The page is served over http://<LAN-IP> (or file://), which is not a
+      // secure context — the browser hides DeviceMotionEvent entirely there.
+      // Shake can never work on this origin; explain why, don't just say "denied".
+      showMotionBanner('this page is not served over HTTPS, so your browser disables the shake sensor');
     } else {
-      els.bannerMotion.classList.remove('hidden');
+      showMotionBanner('this browser does not support the shake sensor');
     }
   }
 

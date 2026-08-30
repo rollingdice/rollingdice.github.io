@@ -2,14 +2,14 @@
   "name": "BIP39 Virtual Dice Seed Generator",
   "short_name": "BIP39 Dice",
   "description": "Demo: shake virtual dice to generate a verifiable BIP-39 seed. Works offline. Not for real funds.",
-  "start_url": "/tools/bip39-dice/",
-  "scope": "/tools/bip39-dice/",
+  "start_url": "/dice/",
+  "scope": "/dice/",
   "display": "standalone",
   "background_color": "#f8fafc",
   "theme_color": "#0f172a",
   "icons": [
     {
-      "src": "/tools/bip39-dice/icon.svg",
+      "src": "/dice/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

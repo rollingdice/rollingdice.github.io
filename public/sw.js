@@ -5,7 +5,7 @@
 // time by scripts/generate-precache.mjs into public/sw-precache.json, so the
 // hashed /_astro/* bundles are captured exactly.
 
-const CACHE = 'bip39-dice-v1';
+const CACHE = 'dice-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -32,7 +32,7 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
-      return caches.match('/tools/bip39-dice/');
+      return caches.match('/dice/');
     })
   );
 });

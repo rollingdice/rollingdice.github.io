@@ -5,6 +5,9 @@ dist/
 # Dependencies
 node_modules/
 
+# E2E screenshots (artifacts, not sources)
+test/screenshots/
+
 # Logs and temp files
 build_logs.txt
 deploy_logs.txt

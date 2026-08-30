@@ -1,5 +1,5 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout title="BIP39 Virtual Dice Seed Generator — Demo" manifest="/manifest.webmanifest">
@@ -20,10 +20,10 @@ import Layout from '../../../layouts/Layout.astro';
 			and reboot. The app makes zero network calls.
 		</div>
 
-		<!-- Motion permission banner -->
+		<!-- Motion banner: shown when the shake API is unavailable (insecure context) or permission is denied -->
 		<div data-banner-motion class="hidden mb-6 rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-600 text-sm leading-relaxed">
-			Motion permission was denied or unavailable, so the <strong>Roll</strong> button is your fallback. It
-			works everywhere.
+			Motion is unavailable: <span data-banner-motion-reason>permission was denied or the browser doesn't support it</span>, so the
+			<strong>Roll</strong> button is your fallback. It works everywhere.
 		</div>
 
 		<!-- Controls -->
@@ -82,7 +82,7 @@ import Layout from '../../../layouts/Layout.astro';
 </Layout>
 
 <script>
-	import { initBip39Dice } from '../../../lib/bip39-dice/app.mjs';
+	import { initBip39Dice } from '../../lib/bip39-dice/app.mjs';
 
 	initBip39Dice(document.getElementById('bip39-dice-root'));
 </script>

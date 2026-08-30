@@ -19,11 +19,22 @@ export async function deriveSeed(rollString, wordCount = 12) {
     throw new Error('rollString must be a non-empty string of digits 1-6');
   }
   // SHA-256 over the ASCII digits, exactly as typed.
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(rollString));
-  const hashBytes = new Uint8Array(digest);
+  const hashBytes = await sha256(new TextEncoder().encode(rollString));
   const entropy = wordCount === 12 ? hashBytes.slice(0, 16) : hashBytes;
   const mnemonic = entropyToMnemonic(entropy, wordlist);
   return { entropyHex: toHex(entropy), mnemonic };
+}
+
+async function sha256(bytes) {
+  if (typeof crypto !== 'undefined' && crypto.subtle && typeof crypto.subtle.digest === 'function') {
+    const digest = await crypto.subtle.digest('SHA-256', bytes);
+    return new Uint8Array(digest);
+  }
+  // Insecure context (http://<LAN-IP>, file://): crypto.subtle is unavailable.
+  // Fall back to the audited pure-JS SHA-256 from @noble/hashes (same author as
+  // @scure/bip39). Deterministic, zero network, honors ADR-0004.
+  const { sha256: nobleSha256 } = await import('@noble/hashes/sha2.js');
+  return nobleSha256(bytes);
 }
 
 function toHex(bytes) {

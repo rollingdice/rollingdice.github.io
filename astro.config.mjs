@@ -7,6 +7,13 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://banitama.my.id',
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: {
+      host: true,
+      // Dev-only: allow the cloudflared HTTPS tunnel host so the phone can test
+      // the secure-context (shake) path. The production site (banitama.my.id)
+      // is served over its own HTTPS and is unaffected.
+      allowedHosts: ['.trycloudflare.com'],
+    }
   }
 });
