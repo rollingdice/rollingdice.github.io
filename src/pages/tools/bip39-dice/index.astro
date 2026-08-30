@@ -1,0 +1,88 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout title="BIP39 Virtual Dice Seed Generator — Demo" manifest="/manifest.webmanifest">
+	<main id="bip39-dice-root" class="max-w-4xl mx-auto px-6 py-20">
+		<header class="mb-12">
+			<a href="/" class="text-sm text-slate-500 hover:text-slate-700">← banitama.my.id</a>
+			<h1 class="text-4xl font-bold tracking-tight mt-8 mb-4">BIP39 Virtual Dice Seed Generator</h1>
+			<p class="text-xl text-slate-600 leading-relaxed max-w-2xl">
+				Shake your phone — or press the button — and watch 100 dice tumble. The seed is derived
+				from the dice you see. <strong>Demo for education, not for real funds.</strong>
+			</p>
+		</header>
+
+		<!-- Online warning banner -->
+		<div data-banner-online class="hidden mb-6 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-amber-800 text-sm leading-relaxed">
+			<strong>Warning:</strong> you are <strong>online</strong>. This demo works offline as an installable
+			PWA. For real seeds, run it <strong>offline only</strong> — download / install it, then go offline
+			and reboot. The app makes zero network calls.
+		</div>
+
+		<!-- Motion permission banner -->
+		<div data-banner-motion class="hidden mb-6 rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-600 text-sm leading-relaxed">
+			Motion permission was denied or unavailable, so the <strong>Roll</strong> button is your fallback. It
+			works everywhere.
+		</div>
+
+		<!-- Controls -->
+		<div class="flex flex-wrap items-center gap-4 mb-6">
+			<button data-roll class="px-6 py-3 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 transition-colors">
+				🎲 Shake / Roll
+			</button>
+			<div class="flex items-center gap-2">
+				<span class="text-sm text-slate-500">Renderer:</span>
+				<button data-renderer="2d" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors">2D</button>
+				<button data-renderer="3d" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors">3D</button>
+			</div>
+			<div class="flex items-center gap-2">
+				<span class="text-sm text-slate-500">Words:</span>
+				<button data-strength="12" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors">12</button>
+				<button data-strength="24" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors">24</button>
+			</div>
+		</div>
+
+		<!-- Dice canvas -->
+		<div data-dice-wrap class="relative rounded-2xl border border-slate-200 overflow-hidden bg-slate-50">
+			<!-- canvas injected by the renderer -->
+		</div>
+
+		<!-- Entropy pipeline + seed -->
+		<section data-seed class="mt-8 space-y-4 transition-opacity">
+			<div class="rounded-xl border border-slate-200 p-4">
+				<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-2">Roll string (100 dice, read left→right)</h2>
+				<p data-roll-string class="font-mono text-sm break-all text-slate-700 leading-relaxed"></p>
+			</div>
+			<div class="rounded-xl border border-slate-200 p-4">
+				<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-2">Entropy (SHA-256 → truncated)</h2>
+				<p data-entropy-hex class="font-mono text-sm break-all text-slate-700"></p>
+			</div>
+			<div class="rounded-xl border border-slate-200 p-4">
+				<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-2">BIP-39 seed</h2>
+				<p data-seed-words class="font-mono text-lg leading-relaxed text-slate-900"></p>
+			</div>
+		</section>
+
+		<footer class="mt-12 text-xs text-slate-400 max-w-2xl leading-relaxed space-y-2">
+			<p>
+				<strong>Demo / education only.</strong> The seed is derived from the 100 dice you see
+				(left→right, top→bottom), hashed with SHA-256 and encoded to BIP-39. It is recomputable with
+				any independent tool — re-read the dice to verify. The resting faces come from
+				<code class="text-slate-500">crypto.getRandomValues</code>; the tumbling is visual. This app makes
+				<strong>zero network calls</strong>.
+			</p>
+			<p>
+				Reference method: the hashed dice construction documented at
+				<a href="https://kdmukai-bot.github.io/seedsigner-ai-analysis/dice/standard.html#hash" target="_blank" rel="noopener" class="text-slate-500 hover:underline">Dice to seed — the methods Bitcoin wallets use</a>.
+			</p>
+			<p>Not financial advice — custody education only.</p>
+		</footer>
+	</main>
+</Layout>
+
+<script>
+	import { initBip39Dice } from '../../../lib/bip39-dice/app.mjs';
+
+	initBip39Dice(document.getElementById('bip39-dice-root'));
+</script>
