@@ -41,6 +41,25 @@ jobs:
           echo "=== dist/ size ==="
           du -sh dist/
 
+      # Guard: if the router accidentally remaps all paths (e.g. a Vite
+      # allowedHosts leak in astro.config.mjs), every /insights/* page should
+      # still be present in the static build. Fail the workflow so a broken
+      # deploy never reaches GitHub Pages.
+      - name: Assert insight pages built
+        run: |
+          set -euo pipefail
+          INSIGHTS=$(find dist/insights -name 'index.html' | wc -l)
+          echo "Insight pages in build: $INSIGHTS"
+          if [ "$INSIGHTS" -lt 10 ]; then
+            echo "::error::Expected >=10 insight pages, found $INSIGHTS. Routing may be broken (check astro.config.mjs)."
+            exit 1
+          fi
+          # Spot-check one known page actually resolves to a real file
+          if [ ! -f dist/insights/why-your-next-hardware-wallet-should-have-a-keyboard/index.html ]; then
+            echo "::error::Known insight page missing from build — routing leak suspected."
+            exit 1
+          fi
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
