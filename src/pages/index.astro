@@ -69,6 +69,23 @@ import Layout from '../layouts/Layout.astro';
 			<h2 class="text-sm uppercase tracking-widest text-slate-500 font-bold mb-8">Latest Insights</h2>
 			<div class="space-y-6">
 				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
+					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Security Advisory</span>
+					<h3 class="text-2xl font-bold mb-3">
+						<a href="/insights/coldcard-exploit-client-advisory" class="hover:underline">
+							The Coldcard Exploit: What Self-Custody Clients Must Do Now
+						</a>
+					</h3>
+					<p class="text-slate-600 mb-6 leading-relaxed">
+						A firmware flaw quietly weakened the cryptography behind new Coldcard seeds.
+						Attackers have drained 1,816 BTC from 5,200+ wallets remotely. If your seed was
+						created on an affected device, updating alone will not save it. Here is exactly
+						what to do.
+					</p>
+					<a href="/insights/coldcard-exploit-client-advisory" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group">
+						Read Article <span class="group-hover:translate-x-1 transition-transform">&#8594;</span>
+					</a>
+				</div>
+				<div class="p-8 border border-slate-200 rounded-2xl hover:border-slate-400 transition-colors">
 					<span class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2 block">Lightning Network</span>
 					<h3 class="text-2xl font-bold mb-3">
 						<a href="/insights/lightning-all-time-high-institutional-capacity" class="hover:underline">
