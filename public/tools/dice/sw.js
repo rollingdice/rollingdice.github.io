@@ -1,11 +1,14 @@
-// Service worker for the BIP39 dice demo.
+// Service worker for the BIP39 dice demo, scoped to /tools/dice/.
 // Cache-only by design (ADR-0004: zero network calls — this worker never
 // fetches the network; it serves the precached app shell so the demo runs
 // offline and survives a reboot). The precache list is generated at build
 // time by scripts/generate-precache.mjs into public/sw-precache.json, so the
 // hashed /_astro/* bundles are captured exactly.
+//
+// Registered with { scope: '/tools/dice/' } — it only ever receives requests
+// within the dice app's directory and cannot intercept /insights/* or / .
 
-const CACHE = 'dice-v2';
+const CACHE = 'dice-v3';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -32,7 +35,7 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
-      return caches.match('/dice/');
+      return caches.match('/tools/dice/');
     })
   );
 });

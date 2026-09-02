@@ -9,23 +9,23 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const dist = 'dist';
-const pageHtml = readFileSync(join(dist, 'dice', 'index.html'), 'utf8');
+const pageHtml = readFileSync(join(dist, 'tools', 'dice', 'index.html'), 'utf8');
 
 // Collect /_astro/*.js and /_astro/*.css references from the page HTML.
 const refs = [...pageHtml.matchAll(/(\/_astro\/[^"']+\.(?:js|css))/g)].map((m) => m[1]);
 
 const precache = [
   '/',
-  '/dice/',
+  '/tools/dice/',
   '/manifest.webmanifest',
-  '/dice/icon.svg',
+  '/tools/dice/icon.svg',
   ...refs,
 ];
 
 // Verify each referenced asset exists in dist before writing.
-// Directory routes (/ and /dice/) are served as index.html.
+// Directory routes (/ and /tools/dice/) are served as index.html.
 const missing = precache.filter((p) => {
-  if (p === '/' || p === '/dice/') return false;
+  if (p === '/' || p === '/tools/dice/') return false;
   const rel = p.replace(/^\//, '');
   try {
     readFileSync(join(dist, rel));

@@ -153,9 +153,21 @@ export function initBip39Dice(root) {
 
   // --- PWA / service worker ---
   function registerSW() {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    if (!('serviceWorker' in navigator)) return;
+    if (location.pathname.startsWith('/dice')) {
+      // Legacy root-scoped worker from the pre-2026-09 move. Unregister it
+      // eagerly so it can no longer serve the dice app shell in place of
+      // unrelated pages (e.g. /insights/*).
+      navigator.serviceWorker.getRegistrations().then((regs) =>
+        Promise.all(regs.map((r) => r.unregister()))
+      );
     }
+    // Scoped to /tools/dice/: this worker only ever receives requests within
+    // the dice app's own directory, so it structurally cannot intercept
+    // insights or any other page of the site.
+    navigator.serviceWorker
+      .register('/tools/dice/sw.js', { scope: '/tools/dice/' })
+      .catch(() => {});
   }
 
   // --- wire events ---

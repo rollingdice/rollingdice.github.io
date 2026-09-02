@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../../layouts/Layout.astro';
 ---
 
 <Layout title="BIP39 Virtual Dice Seed Generator — Demo" manifest="/manifest.webmanifest">
@@ -82,7 +82,7 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <script>
-	import { initBip39Dice } from '../../lib/bip39-dice/app.mjs';
+	import { initBip39Dice } from '../../../lib/bip39-dice/app.mjs';
 
 	initBip39Dice(document.getElementById('bip39-dice-root'));
 </script>
