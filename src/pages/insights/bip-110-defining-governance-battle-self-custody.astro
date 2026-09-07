@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <article class="prose prose-slate max-w-2xl mx-auto py-12 px-4 selection:bg-slate-100">
+    <header class="mb-10">
+      <a href="/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors inline-flex items-center gap-2 mb-6">
+        ← Back to Home
+      </a>
+      <span class="block text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Bitcoin Governance</span>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        BIP-110's Eight-Hour Fork Settled Who Governs Bitcoin
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed font-normal">
+        On August 8, a faction of nodes split Bitcoin's chain to force through a soft fork almost nobody wanted. The split produced two blocks in eight hours. The verdict it delivered defines how Bitcoin will be governed from here, and it changes what self-custody actually protects.
+      </p>
+      <div class="mt-6 flex items-center gap-3 text-sm text-slate-500 border-t border-slate-100 pt-6">
+        <span class="font-medium text-slate-800">Sovereign Wealth Engineering</span>
+        <span>•</span>
+        <time datetime="2026-09-07">September 7, 2026</time>
+      </div>
+    </header>
+
+    <section class="space-y-6 text-slate-700 leading-relaxed">
+      <p>
+        At 19:35 UTC on August 8, a mining pool called AntPool mined a block without a flag that almost nobody wanted set. Nodes running Bitcoin Knots with BIP-110 enforcement rejected it. Forty minutes later they accepted a rival version of the same block from a small mining outfit called Roughnecks. That was the split. The BIP-110 chain produced exactly two blocks, both by Roughnecks, and then nothing for three weeks.
+      </p>
+
+      <p>
+        I wrote about this three times over the summer, finishing with <a href="/insights/bip-110-august-deadline-self-custody" class="text-amber-600 hover:text-amber-700 underline">practical instructions for self-custody holders</a>. The direction was right. The speed was not. Nobody serious predicted that months of argument would be settled in eight hours and forty-eight blocks.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What BIP-110 asked for</h2>
+
+      <p>
+        BIP-110, the <a href="https://github.com/bitcoin/bips/blob/master/bip-0110.mediawiki" class="text-amber-600 hover:text-amber-700 underline">Reduced Data Temporary Softfork</a>, was a one-year proposal to cap how much data a Bitcoin transaction can carry. New outputs limited to 34 bytes, OP_RETURN back to its old 83, data pushes to 256, several Taproot features disabled. The targets were Ordinals inscriptions, BRC-20 tokens and Runes, which supporters called spam loading up a payment network. I walked through <a href="/insights/bitcoin-core-31-1-bip-110-protocol-war" class="text-amber-600 hover:text-amber-700 underline">all seven rules</a> in July and the practical risks they posed to wallets. The bytes were never the real story. The governance was.
+      </p>
+
+      <p>
+        BIP-110 lowered the traditional 95 percent miner threshold for a soft fork to 55 percent. Then it added a mandatory signaling window. From block 961,632 onward, nodes enforcing the proposal would reject any block that did not set bit 4, forcing lock-in no later than block 963,648 whether most miners wanted it or not. The proposal's own supporters knew overwhelming consensus was not coming. They built a mechanism to do without it.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The numbers that killed it</h2>
+
+      <p>
+        Voluntary signaling peaked at 2.53 percent, 51 blocks out of 2,016, every one of them from a single pool, Ocean. The threshold sat at 55 percent. When the window opened, AntPool mined the first block without the flag and F2Pool the second, and the enforcing nodes walked onto a chain with roughly 0.15 percent of the network's hashpower behind it. Within eight hours the main chain sat 48 blocks ahead. Within days the BIP-110 chain was frozen while the main chain ran more than 240 blocks past it, according to the <a href="https://bip110.org/monitor" class="text-amber-600 hover:text-amber-700 underline">signaling monitor</a>.
+      </p>
+
+      <p>
+        There were no reorganizations on the main chain. No confirmed user losses. The fee market stayed calm at 0 to 3 sat/vB, and spot ETFs took in $853 million on August 9. Bitcoin's price barely noticed. The gap between 2.53 percent and 55 percent was not a negotiation failure. It was a statement.
+      </p>
+
+      <p>
+        Mining pools looked at a proposal that would eliminate a real fee source for a year and refused. Ordinals and Runes pay actual fees, and in peak periods they pushed average transaction costs above $20. Block subsidies halve every four years, and miner economics lean harder on fees with every cycle. The people who mine Bitcoin ran the numbers and said no.
+      </p>
+
+      <p>
+        The philosophical argument was more interesting. Michael Saylor published 110 Reasons BIP 110 Is a Bad Idea in July, arguing that the moment consensus rules start distinguishing acceptable from unacceptable fee-paying transactions, the precedent is set. A multisig that embeds metadata today is non-financial data tomorrow. Adam Back called the design flaws fatal and reminded supporters that their permissionless recourse was to fork off. After the split he was blunter. They forked off and found out. On the other side Luke Dashjr, whose Bitcoin Knots shipped the enforcement rules, rejected the word failure entirely. BIP110 is active on the Bitcoin network, he wrote, and accused the pools of attacking it. Both sides claimed victory. The blocks said otherwise.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The replay problem nobody fixed</h2>
+
+      <p>
+        The part that could have hurt real people was replay. BIP-110 shipped without replay protection, because it was designed to activate, not to split. Bitcoin Cash, the closest historical parallel, launched with replay protection from its first block. BIP-110 did not. Kevin Loaec <a href="https://crypto.news/bitcoin-bip-110-fork-expose-holders-to-replay-attacks/" class="text-amber-600 hover:text-amber-700 underline">warned on August 6</a> that a new shitcoin was about to fork off, and that anyone trying to sell the forked coins to buy more Bitcoin could be replayed.
+      </p>
+
+      <p>
+        The mechanics are simple. A split creates two chains with the same balances. A transaction you sign to send forked coins on the minority chain is also valid on the main chain, and a buyer looking at both can broadcast your signature on the chain you did not intend. Your real Bitcoin moves to an address you never meant to pay. The fix was not clever. It was to do nothing. Start9, the node manufacturer, told users to take no action, avoid splitting coins, and wait for the minority chain to die. That advice proved correct within hours. The people at risk were not the ones holding keys. They were the ones trying to get clever with a dying chain's coins.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Who actually decided</h2>
+
+      <p>
+        What the eight hours revealed was who decides. The blocksize war took years, produced Bitcoin Cash, and nearly produced SegWit2x, which was called off at the last minute when exchanges and businesses refused to follow. BIP-110 got the same verdict in eight hours. Miners cannot force a rule change, because nodes reject their blocks. Nodes cannot force one either, because they can always be left behind. What carries a change is the economic network, the exchanges, custodians, wallets and businesses, plus the node software they actually run.
+      </p>
+
+      <p>
+        SegWit itself activated through a user-activated soft fork, BIP 148, because users running nodes wanted it. BIP-110 was the same mechanism pointed the other way. The enforcing nodes were real, but there were never many of them. Coin Dance measured Knots at roughly 21 percent of reachable nodes around the split, and estimates of BIP-110-capable listening nodes ran from 2 to 8 percent and were disputed the whole way. That constituency followed a chain that stopped advancing. Their software still points there today unless they changed it. <a href="/insights/bip-110-governance-showdown-self-custody" class="text-amber-600 hover:text-amber-700 underline">I argued in July</a> that this fight was about who gets to decide what Bitcoin is for. The decision came back unanimous from everyone who had a vote, and the vote was software defaults plus inaction.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The losers started a new coin</h2>
+
+      <p>
+        The aftermath was uglier than the split. Mark Erhardt, the BIP editor who assigned BIP-110 its number while calling it a misguided and unusually careless proposal, moved to strip Dashjr of his editor role over how the proposal was handled. The motion is still open. Ocean, which switched its default to signal the proposal in July, admitted routing customer hashpower onto the dying chain for about 18 hours and promised rebates, and its reported hashrate collapsed by 96 percent.
+      </p>
+
+      <p>
+        Then the backers did the thing nobody thought they would. They started over. On the last weekend of August they <a href="https://www.crowdfundinsider.com/2026/09/304479-bitcoin-improvement-proposal-bip-110-fork-restarts-after-stall-shrinks-block-sizes-to-300-kb/" class="text-amber-600 hover:text-amber-700 underline">restarted the stalled chain with a new proof of work</a>. Dashjr changed the mining puzzle from SHA-256d to Blake2b, an algorithm ASICs are useless at, so ordinary computers could mine again. They capped the block size at 300 kilobytes, a third of Bitcoin's one-megabyte base limit. The first Blake2b block came from a miner called Silent Wave at height 961,640. Within days backers reported more than 800 blocks on the revived chain.
+      </p>
+
+      <p>
+        The token is listed on no major exchange and carries no CoinGecko or CoinMarketCap ticker, and one of the developers says the project will avoid KYC platforms and push people to earn and spend the coins through goods and services instead. The pseudonymous author Dathon Ohm had laid out the logic days after the split, <a href="https://beincrypto.com/bip-110-fork-breakaway-coin-september/" class="text-amber-600 hover:text-amber-700 underline">accusing the large mining pools of colluding</a> to turn Bitcoin from money into a toxic data dumping ground and announcing a proposal to fire the miners.
+      </p>
+
+      <p>
+        This is Adam Back's permissionless recourse taken to its end. The faction that could not win the argument inside Bitcoin left it and started a coin of its own. The market has been consistent about that path. Bitcoin Gold swapped SHA-256 for Equihash in 2017 and trades near a dollar today. Bitcoin Cash kept the mining algorithm, split with real support, and trades at roughly 0.3 percent of Bitcoin's price.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What this means for self-custody</h2>
+
+      <p>
+        Your node is your vote, and it is the only vote there is. Nothing in August resembled a ballot. What happened was defaults. Most nodes ran Bitcoin Core and accepted the blocks that came. Most pools refused to signal. Every exchange, custodian and wallet that declined to adopt the rules voted with inaction. If you hold your own keys and run no node, your governance vote is cast by the infrastructure your wallet talks to, an exchange's backend, a wallet provider's servers, an ETF custodian's policies. The network heard those actors clearly. It never heard the keyholders.
+      </p>
+
+      <p>
+        The second lesson is the boundary of self-custody. Keys are ownership. Consensus is authority. Your keys decide who can move your coins. The network decides what coins are, which transactions are valid, which chain is worth anything. The Knots enforcers had the same keys they always had, and their chain died under them. A hardware wallet, a seed phrase, a multisig vault, all of that is custody. None of it is consensus. If the software your stack speaks to enforces a losing rule set, your custody is worth what that losing chain is worth.
+      </p>
+
+      <p>
+        The operational lesson is that the correct move during a split is to do nothing. Grandfathering already guaranteed that existing coins could never be frozen, and the rules never even activated, so the only people exposed were the ones trying to claim or sell the coins of a chain that had not finished dying. Self-custody buys you the option to claim a fork if one happens. ETF holders got nothing, because their prospectuses abandon forked assets by design. But the option only matters if the fork is alive, and the BIP-110 chain was dead within a weekend. Self-custody buys the option, not the outcome.
+      </p>
+
+      <p>
+        The fight itself is not over. Inscriptions are still on the chain. The Cat, a stricter follow-on, is waiting to be written up properly, and the question of what belongs on a payment network is permanent. What changed on August 8 is the precedent. Bitcoin rejected a consensus change that almost nobody wanted, in eight hours, without a vote, without a leader, without freezing a single coin. That is the most decisive governance result in the network's history, and it was produced by people running nodes and businesses refusing to bend. Keys are not consensus. If you want a vote in where Bitcoin goes, run a node, because the network just proved that is the only vote there is.
+      </p>
+    </section>
+  </article>
+</Layout>
